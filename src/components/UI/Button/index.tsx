@@ -1,7 +1,7 @@
 import Loader from "@components/Loader";
-import { FC } from "react";
+import { ButtonHTMLAttributes, FC } from "react";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   isLoading?: boolean;
   cls?: string;

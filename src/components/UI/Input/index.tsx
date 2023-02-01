@@ -1,6 +1,10 @@
-import React from "react";
+import React, { InputHTMLAttributes } from "react";
 
-const Input = ({ cls, ...props }: { cls: string }) => {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  cls?:string
+} 
+
+const Input = ({ cls, ...props }: InputProps) => {
   return (
     <input
       {...props}
