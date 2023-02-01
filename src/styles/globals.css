@@ -12,3 +12,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+.section__height {
+  height: calc(100vh - 4rem);
+}
