@@ -5,7 +5,7 @@ import Button from "@components/UI/Button";
 
 const Header = () => {
   return (
-    <div className="px-4 h-16 py-3 border sticky top-0 z-20 bg-white/60">
+    <div className="px-4 h-16 py-3 border sticky top-0 z-20 bg-white/60 backdrop-blur-xl">
       <div className="flex justify-between items-center container mx-auto">
         <Link href="/">W3b Bharat</Link>
         <div className="flex items-center space-x-2">
