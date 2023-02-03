@@ -52,7 +52,7 @@ const ProfilePage = (props: Props) => {
               className="h-full w-full rounded-full object-center object-cover"
             />
           </div>
-          <p className="text-3xl font-semibold mt-4">{data?.name}</p>
+          <p className="text-2xl font-semibold mt-4">{data?.name}</p>
           <div className="md:text-lg flex items-center gap-1 text-gray-600">
             @{username} <FiGlobe className="text-secondary" />
             {data?.location}
@@ -76,7 +76,7 @@ const ProfilePage = (props: Props) => {
           </h6>
           <p className="mt-4 mb-8  text-gray-600 md:text-lg">{data?.about}</p>
           <hr />
-          <h6 className="mt-8 mb-4 text-primary text-3xl block">
+          <h6 className="mt-8 mb-4 text-primary text-2xl block">
             {"I'm available for"}
           </h6>
           <div className=" flex flex-wrap gap-2">
