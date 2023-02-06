@@ -1,62 +1,109 @@
-import { API } from "@api/index"
-import Router from "next/router"
-import { toast } from "react-hot-toast"
-import { AuthState, ZAuthSetFunction } from ".."
+import { API } from "@api/index";
+import Router from "next/router";
+import { toast } from "react-hot-toast";
+import {
+  EducationItem,
+  UpdateUserProps,
+  WorkExperienceItem,
+} from "./actions.types";
+import { ZAuthSetFunction } from "..";
 
-export type UserResponse = {
-  profile: {
-    _id:string 
-    user: {
-      _id:string 
-      email:string 
-      role:string 
-      firstTime:false
-    }
-    name:string 
-    avatar:string 
-    skills: string[]
-    availableFor:string[]
-  }
-  education:unknown[]
-  experience:unknown[]
-  activities:unknown[]
-}
 
-const getUserData = async ():Promise<UserResponse> => {
-  const res = await API.get("/user");
-  return res?.data
-}
-
-export const loginWithEmail = async (set:ZAuthSetFunction,email:string,password:string) => {
-  try{  
-    if(!email || !password) throw new Error("Email or password found!") 
-    const res = await API.post("/auth/login",{email,password})
-  
-    // if user logged in successfully -> set AccessToken -> get user data -> save to state
-    if(res?.status === 200){
-      localStorage.setItem("w3Token",res?.data?.accessToken)
-      toast.success(res?.data?.msg)
-      const userData = await getUserData()
-      set({isLoggedIn:true,error:"",userId:userData?.profile?.user?._id,user:userData})        
-    }
-    
-    // failed to login -> set error 
-    if(res?.status === 400){
-      toast.error(res?.data?.msg)
-      set({isLoggedIn:false,error:res?.data?.msg,userId:"",user: null})
-    }
-
-  }catch(err){
-    console.log("loginWithEmail",err)
-  }
-}
-
-export const logout = async ()=>{
+const getUserData = async (set:ZAuthSetFunction): Promise<void> => {
   try{
-    const response = await API.post("/auth/logout")
-    return response
-  } catch(err){
-    console.log("logout",err)
-  }
-}
 
+    const userDataResponse = await API.get("/user");
+    
+    if(userDataResponse?.status === 200){
+      set({
+        isLoggedIn: true,
+        error: "",
+        userId: userDataResponse?.data.profile?.user?._id,
+        user: userDataResponse?.data,
+      });
+    }
+  } catch(err){
+    console.log("getUserData",err)
+
+  }
+
+};
+
+export const updateUserDetail = async (
+  set: ZAuthSetFunction,
+  data: Partial<UpdateUserProps>
+) => {
+  try {
+    const updateRes =await API.put("/user", data);
+    if(updateRes?.status===200){
+      await getUserData(set).then(()=>toast.success("Saved !"))
+    }
+  } catch (err: any) {
+    console.log("updateUserDetails",err)
+  }
+};
+
+export const loginWithEmail = async (
+  set: ZAuthSetFunction,
+  email: string,
+  password: string
+) => {
+  try {
+    if (!email || !password) throw new Error("Email or password found!");
+    const res = await API.post("/auth/login", { email, password });
+
+    // if user logged in successfully -> set AccessToken -> get user data -> save to state
+    if (res?.status === 200) {
+      localStorage.setItem("w3Token", res?.data?.accessToken);
+      toast.success(res?.data?.msg);
+      await getUserData(set).then(()=> {
+        toast.success("Logged In Successfully")
+        Router.push("/")
+      });
+      
+    }
+  } catch (err: any) {
+    const errResponse = err?.response;
+    // failed to login -> set error
+    if (errResponse?.status === 400) {
+      const errMessage = errResponse?.data?.msg;
+      toast.error(errMessage);
+      set({ isLoggedIn: false, error: errMessage, userId: "", user: null });
+    }
+    console.log("loginWithEmail", err);
+  }
+};
+
+export const logout = async (set: ZAuthSetFunction) => {
+  try {
+    const response = await API.post("/auth/logout");
+    set({ isLoggedIn: false, userId: "" });
+    Router.push("/");
+  } catch (err) {
+    console.log("logout", err);
+  }
+};
+
+export const addWorkExperience = async (
+  set: ZAuthSetFunction,
+  data: WorkExperienceItem
+) => {
+  const response = await API.post("/user/experience",data);
+  if(response.status === 200){
+      await getUserData(set).then(()=> {
+      toast.success("Saved!")
+    });
+  }  
+};
+
+export const addEducation = async (
+  set: ZAuthSetFunction,
+  data: EducationItem
+) => {
+  const response = await API.post("/user/education",data);
+  if(response.status === 200){
+      await getUserData(set).then(()=> {
+      toast.success("Saved!")
+    });
+  }  
+};

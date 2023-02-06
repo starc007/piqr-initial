@@ -19,8 +19,9 @@
 
 
 @layer components{
-  .btn__primary {
-    @apply bg-primary active:brightness-90 px-4 py-2 text-white rounded font-medium hover:shadow-xl hover:brightness-125 duration-200 ease-out
+
+  .btn__simple {
+    @apply bg-gray-100 hover:bg-gray-200  focus:ring-black active:bg-gray-300 px-4 py-2 text-black rounded font-medium  duration-200 ease-out
   }
   .btn__secondary-outline {
     @apply border-secondary text-secondary font-medium border px-4 py-2 rounded hover:shadow-xl duration-200 ease-out;
@@ -28,4 +29,8 @@
   .tag__simple {
     @apply rounded border py-2 px-3 hover:bg-gray-50 hover:border-gray-400 cursor-pointer duration-300 ease-out
   }
+}
+
+.rti--container {
+  --rti-main: "black" !important;
 }

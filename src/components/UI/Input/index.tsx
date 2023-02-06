@@ -1,8 +1,12 @@
-import React, { InputHTMLAttributes } from "react";
+import React, { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   cls?:string
 } 
+
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  cls?:string
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input({ cls, ...props },ref){
   return (
@@ -15,3 +19,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input({ cl
 });
 
 export default Input;
+
+
+export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(function Input({ cls, ...props },ref){
+  return (
+    <textarea
+       ref={ref}
+      {...props}
+      className={`text-primary placeholder-gray-500 transition duration-300 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent ${cls}`}
+    />
+  );
+});

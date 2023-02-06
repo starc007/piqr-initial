@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Input from "@components/UI/Input";
 import Button from "@components/UI/Button";
@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthStore } from "@store/index";
 import { useRouter } from "next/router";
 import { API } from "@api/index";
+import { BiError, BiErrorAlt, BiErrorCircle } from "react-icons/bi";
 
 interface FormData {
   email: string;
@@ -16,10 +17,16 @@ interface FormData {
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm<FormData>();
-  const { login,isLoggedIn } = useAuthStore();
+  const { register, handleSubmit,setValue } = useForm<FormData>();
+  const { login,isLoggedIn,error} = useAuthStore();
 
-  const handleGoogleLogin = () => {};
+
+  useEffect(()=>{
+    // if error occurs , refresh password to empty
+    if(error){
+      setValue("password","")
+    }
+  },[error,setValue])
 
   const handleEmailPasswordLogin: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
@@ -109,7 +116,12 @@ const Login = () => {
                   placeholder="Enter password"
                   cls="w-full h-14 pl-10 pr-4"
                 />
+                
               </div>
+
+             {error && <div className="mt-4 border flex items-start gap-2 border-red-500 bg-red-50 text-red-500 p-4 rounded-md font-medium">
+                <BiErrorCircle className="h-6 w-6 "/> ERROR : {error}
+              </div>}
             </div>
 
             <Button
