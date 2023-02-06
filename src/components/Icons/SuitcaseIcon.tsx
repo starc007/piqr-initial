@@ -11,14 +11,14 @@ function Icon(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <path
-        stroke="#46C1F6"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
         d="M10.731 7.6V6.28c0-2.92 0-5.28 5.415-5.28h2.708c5.415 0 5.415 2.36 5.415 5.28V7.6M10.73 34H24.27c6.802 0 8.02-2.657 8.376-5.89l1.269-13.2c.457-4.027-.728-7.31-7.953-7.31H9.039c-7.225 0-8.41 3.284-7.953 7.31l1.27 13.2C2.71 31.343 3.928 34 10.73 34z"
       ></path>
       <path
-        stroke="#46C1F6"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"

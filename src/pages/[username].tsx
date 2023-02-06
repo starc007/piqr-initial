@@ -9,6 +9,7 @@ import SuitcaseIcon from "@components/Icons/SuitcaseIcon";
 import StarIcon from "@components/Icons/StarIcon";
 import { FiGlobe } from "react-icons/fi";
 import {HiOutlineEnvelope} from "react-icons/hi2"
+import CollaborateIcon from "@components/Icons/CollaborateIcon";
 type Props = {};
 
 const ProfilePage = (props: Props) => {
@@ -38,9 +39,9 @@ const ProfilePage = (props: Props) => {
       "https://avatars.githubusercontent.com/u/26627776?s=400&u=cd1b01b3ff21747c214b0b4b0d2a6b9bfef39695&v=4",
   };
   return (
-    <section className="section__height md:px-16 pt-4 md:pt-0 ">
+    <section className="section__height lg:px-16 pt-4 md:pt-0 ">
       <div
-        className="grid items-center  md:grid-cols-2
+        className="grid items-center  lg:grid-cols-2
        p-4 md:p-8"
       >
         <div className="flex flex-col items-center sm:items-start md:block mb-8">
@@ -64,7 +65,7 @@ const ProfilePage = (props: Props) => {
             Suporters : {data?.supporters} | Supporting : {data?.supporting}
           </div>
           <div className="mt-8 flex gap-2">
-            <Button cls="btn__primary">Collaborate</Button>
+            <Button cls="btn__primary gap-2"><CollaborateIcon />Collaborate</Button>
             <Button cls="btn__secondary-outline">Follow</Button>
             <Button cls="btn__secondary-outline px-2"><HiOutlineEnvelope className="h-6 w-6"/></Button>
           </div>
@@ -93,31 +94,31 @@ const ProfilePage = (props: Props) => {
         <div className="flex  items-center justify-around mt-8 mb-16 ">
           <div className="flex flex-col items-center">
             <div className="h-16 w-16 bg-[#FFB039] rounded-full flex items-center justify-center p-3">
-              <CheckedListIcon />
+              <CheckedListIcon className="text-white" />
             </div>
             <div className="font-semibold text-center">All</div>
           </div>
           <div className="flex flex-col items-center">
             <div className="h-16 w-16 bg-[#EBE9FB] rounded-full flex items-center justify-center p-3">
-              <AcademicIcon />
+              <AcademicIcon className="text-[#544F87]"/>
             </div>
             <div className="font-semibold text-center">Education</div>
           </div>
           <div className="flex flex-col items-center">
             <div className=" rounded-full p-3 bg-[#F3FFF7]">
-              <TargetIcon />
+              <TargetIcon  className="text-[#4FC971]"/>
             </div>
             <div className="font-semibold text-center">Goal</div>
           </div>
           <div className="flex flex-col items-center ">
             <div className=" rounded-full p-3 bg-[#EDFAFF]">
-              <SuitcaseIcon />
+              <SuitcaseIcon className="text-[#46C1F6]" />
             </div>
             <div className="font-semibold text-center">Position</div>
           </div>
           <div className="flex flex-col items-center ">
             <div className=" rounded-full p-3 bg-[#FFF3E3]">
-              <StarIcon />
+              <StarIcon className="text-[#FFB74A]" />
             </div>
             <div className="font-semibold text-center">Others</div>
           </div>

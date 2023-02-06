@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://api.github.com";
+const BASE_URL = "https://bharat-api.vercel.app/api/v1";
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -8,7 +8,7 @@ export const API = axios.create({
 });
 
 API.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem("w3Token");
   config.headers["Authorization"] = token ? `Bearer ${token}` : "";
   return config;
 });
