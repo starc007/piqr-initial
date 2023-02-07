@@ -26,7 +26,37 @@ export interface UpdateUserProps {
   availableFor: string[];
 }
 
-export type UserResponse = {
+export interface Socials {
+  facebook : string 
+  twitter: string 
+  instagram : string 
+  linkedin : string 
+  behance:string 
+  dribble :string 
+  website:string 
+  youtube:string 
+}
+
+export interface ActivityItem { 
+  title:string 
+  description:string 
+  tags:string[]
+  collaborators:string[]
+  date:Date
+}
+
+export interface EndorseItem {
+  message:string 
+  endorseTo:string
+}
+
+export interface MessageItem {
+  message:string 
+  uid:string 
+}
+
+
+export interface UserResponse {
   profile: {
     _id:string 
     user: {

@@ -65,7 +65,7 @@ const ProfilePage = (props: Props) => {
             Suporters : {data?.supporters} | Supporting : {data?.supporting}
           </div>
           <div className="mt-8 flex gap-2">
-            <Button cls="btn__primary gap-2"><CollaborateIcon />Collaborate</Button>
+            <Button cls=" px-4 gap-4 bg-primary text-white hover:bg-gray-200  rounded-md  font-semibold gap"><CollaborateIcon />Collaborate</Button>
             <Button cls="btn__secondary-outline">Follow</Button>
             <Button cls="btn__secondary-outline px-2"><HiOutlineEnvelope className="h-6 w-6"/></Button>
           </div>

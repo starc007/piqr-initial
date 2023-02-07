@@ -1,7 +1,12 @@
 import { create } from "zustand";
 import {
+  addActivity,
   addEducation,
+  addSocials,
   addWorkExperience,
+  deleteActivity,
+  deleteExperience,
+  endorseUser,
   loginWithEmail,
   logout,
   updateUserDetail,
@@ -11,6 +16,9 @@ import {
   WorkExperienceItem,
   EducationItem,
   UserResponse,
+  Socials,
+  ActivityItem,
+  EndorseItem,
 } from "./action/actions.types";
 
 export interface AuthState {
@@ -26,6 +34,14 @@ export interface AuthActions {
   updateUserDetail: (data: Partial<UpdateUserProps>) => Promise<void>;
   addWorkExp: (data: WorkExperienceItem) => Promise<void>;
   addEducation: (data: EducationItem) => Promise<void>;
+  addSocials:(data:Socials) => Promise<void>
+  addActivity:(data:ActivityItem) => Promise<void>
+  deleteEducation:(id:string) => Promise<void>
+  deleteExperience:(id:string) => Promise<void>
+  deleteActivity:(id:string) => Promise<void>
+  endorseUser:(data:EndorseItem) => Promise<void>
+  // getAllMessages
+  // getAllMessagesByUser
 }
 
 export type ZAuthSetFunction = (partial: (AuthState & AuthActions) | Partial<AuthState & AuthActions> | ((state: AuthState & AuthActions) => (AuthState & AuthActions) | Partial<AuthActions & AuthState>), replace?: boolean | undefined) => void
@@ -40,9 +56,15 @@ const initialState: AuthState = {
 
 export const useAuthStore = create<AuthState & AuthActions>((set) => ({
   ...initialState,
-  login: async (email, password) => await loginWithEmail(set, email, password),
-  logout: async () => logout(set),
-  updateUserDetail: async (data) => await updateUserDetail(set, data),
-  addWorkExp: async (data) => await addWorkExperience(set, data),
-  addEducation: async (data) => await addEducation(set, data),
+  login:(email, password) => loginWithEmail(set, email, password),
+  logout:() => logout(set),
+  updateUserDetail:(data) => updateUserDetail(set, data),
+  addWorkExp:(data) => addWorkExperience(set, data),
+  addEducation:(data) => addEducation(set, data),
+  addActivity:(data) => addActivity(set,data),
+  addSocials:(data) => addSocials(set,data),
+  deleteActivity:(id)=> deleteActivity(set,id),
+  deleteEducation: (id)=> deleteActivity(set,id),
+  deleteExperience:(id)=> deleteExperience(set,id),
+  endorseUser:(data) => endorseUser(set,data),
 }));
