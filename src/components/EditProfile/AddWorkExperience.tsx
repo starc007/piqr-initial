@@ -1,7 +1,7 @@
 import Button from "@components/UI/Button";
 import Input, { TextArea } from "@components/UI/Input";
 import Modal from "@components/UI/Modal";
-import { EducationItem } from "@store/action/actions.types";
+import { EducationItem, WorkExperienceItem } from "@store/action/actions.types";
 import { useAuthStore } from "@store/index";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,54 +11,63 @@ interface Props {
   closeModal: () => void;
 }
 
-export const AddEducationModal = ({
+export const AddWorkExperienceModal = ({
   open,
   closeModal,
 }: Props) => {
-  const { register, handleSubmit } = useForm<EducationItem>({
+  const { register, handleSubmit ,reset} = useForm<WorkExperienceItem>({
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const addEducation = useAuthStore((state) => state.addEducation);
+  const addWorkExperience = useAuthStore((state) => state.addWorkExp);
 
-  const handleUpdateBio: SubmitHandler<EducationItem> = async (data) => {
+  const handleUpdateBio: SubmitHandler<WorkExperienceItem> = async (data) => {
     setSubmitting(true);
-    await addEducation(data);
+    await addWorkExperience(data);
     setSubmitting(false);
+    reset()
     closeModal();
   };
 
   return (
     <Modal
-      title="Add Education"
+      title="Add Work Experience"
       isOpen={open}
       closeModal={closeModal}
       cls="max-w-md container"
     >
       <form onSubmit={handleSubmit(handleUpdateBio)} className="mt-4">
         <label className="mb-1 block text-gray-500 font-medium">
-          Institution Name
+          Company Name
         </label>
         <div>
           <Input
-            {...register("schoolName")}
+            {...register("companyName")}
             cls="mb-4 border-gray-400 w-full p-2 px-3"
             required
           />
         </div>
-        <label className="mb-1 block text-gray-500 font-medium">Degree</label>
+        <label className="mb-1 block text-gray-500 font-medium">Position</label>
         <div>
           <Input
-            {...register("degree")}
+            {...register("position")}
             cls="mb-4 border-gray-400 w-full p-2 px-3"
             required
           />
         </div>
         <label className="mb-1 block text-gray-500 font-medium">
-          Field of Study
+          Description
         </label>
         <div>
+          <TextArea
+            {...register("description")}
+            cls="mb-4 border-gray-400 w-full p-2 px-3"
+            required
+          />
+        </div>
+        <label className="mb-1 block text-gray-500 font-medium">Location</label>
+        <div>
           <Input
-            {...register("fieldOfStudy")}
+            {...register("location")}
             cls="mb-4 border-gray-400 w-full p-2 px-3"
             required
           />
@@ -82,11 +91,10 @@ export const AddEducationModal = ({
             type="date"
             {...register("to")}
             cls="mb-4 border-gray-400 w-full p-2 px-3"
-            required
           />
         </div>
         <label className="mb-1 block text-gray-500 font-medium">
-          Currently Studying ?
+          Currently Working ?
         </label>
         <div className="flex gap-4">
           <label className="flex items-center gap-1">

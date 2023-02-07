@@ -12,6 +12,9 @@ import { AddBioModal } from "@components/EditProfile/AddBioModal";
 import { AddAvailableForModal } from "@components/EditProfile/AddAvailableForModal";
 import { AddEducationModal } from "@components/EditProfile/AddEducation";
 import { EducationItem } from "@store/action/actions.types";
+import { AddWorkExperienceModal } from "@components/EditProfile/AddWorkExperience";
+import moment from "moment";
+import { AddLinksModal } from "@components/EditProfile/AddLinkModal";
 
 const EditButton = ({ onClick }: { onClick?: () => void }) => {
   return (
@@ -31,11 +34,11 @@ const EditProfile = () => {
   const [bioModal, setBioModal] = useState<boolean>(false);
   const [eduModal, setEduModal] = useState<boolean>(false);
   const [expModal, setExpModal] = useState<boolean>(false);
+  const [linksModal, setLinksModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
   const [editName, setEditName] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-
   const handleUpdateName = async () => {
     setSubmitting(true);
     updateUserDetail({ name });
@@ -164,7 +167,10 @@ const EditProfile = () => {
                     {item?.degree} | {item?.fieldOfStudy}
                   </p>
                   <p className="text-gray-400 text-sm">
-                    {item?.schoolName},{`${item?.from} - ${item?.to}`}
+                    {item?.schoolName} ,{" "}
+                    {`${moment(item?.from).format("MMM YYYY")} - ${moment(
+                      item?.to
+                    ).format("MMM YYYY")}`}
                   </p>
                 </div>
               </div>
@@ -191,7 +197,19 @@ const EditProfile = () => {
               >
                 {/* <AcademicIcon /> */}
                 <div className="flex-1 text">
-                  position
+                  <p className="font-medium ">
+                    {item.position} @ {item?.companyName}
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    {item?.location} ,{" "}
+                    {`${moment(item?.from).format("MMM YYYY")} - ${
+                      item?.to
+                        ? moment(item?.to).format("MMM YYYY")
+                        : item?.current && "Now"
+                    }`}
+                  </p>
+                  <hr className="my-2" />
+                  <p className="text-gray-600 text-sm">{item?.description}</p>
                 </div>
               </div>
             ))}
@@ -202,40 +220,11 @@ const EditProfile = () => {
         <div className=" grid md:grid-cols-5 gap-16 ">
           <div className="md:col-span-2">
             <p className="text-xl flex items-center justify-between text-gray-600 col-span-2 font-semibold">
-              Links <EditButton />
+              Links <EditButton onClick={() => setLinksModal(true)} />
             </p>
             <p className="text-sm text-gray-400">
               Show off your website, social media profiles, or other links.
             </p>
-            <div className="space-y-4 mt-4">
-              <div className="flex gap-4 items-center p-4 rounded bg-[#FAFAFF]">
-                <FiLink className="h-8 w-8" />
-                <div className="flex-1">
-                  <p className="font-medium ">Add an Introduction</p>
-                  <p className="text-gray-400 text-sm">
-                    Tells others who you are and the type of work you do
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-center p-4 rounded bg-[#FAFAFF]">
-                <FiLink className="h-8 w-8" />
-                <div className="flex-1">
-                  <p className="font-medium ">Add an Introduction</p>
-                  <p className="text-gray-400 text-sm">
-                    Tells others who you are and the type of work you do
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-center p-4 rounded bg-[#FAFAFF]">
-                <FiLink className="h-8 w-8" />
-                <div className="flex-1">
-                  <p className="font-medium ">Add an Introduction</p>
-                  <p className="text-gray-400 text-sm">
-                    Tells others who you are and the type of work you do
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
           <div className="md:col-span-3">
             <p className="text-xl text-gray-600 flex items-center justify-between col-span-2 font-medium">
@@ -244,35 +233,7 @@ const EditProfile = () => {
             <p className="text-sm text-gray-400">
               Share what {"you’ve"} been working on!
             </p>
-            <div className="mt-4 space-y-4">
-              <div className="flex gap-4 items-center p-4 rounded bg-[#FAFAFF]">
-                <BiEditAlt className="h-8 w-8 text-gray-400" />
-                <div className="flex-1">
-                  <p className="font-medium ">Add an Introduction</p>
-                  <p className="text-gray-400 text-sm">
-                    Tells others who you are and the type of work you do
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-center p-4 rounded bg-[#FAFAFF]">
-                <BiEditAlt className="h-8 w-8 text-gray-400" />
-                <div className="flex-1">
-                  <p className="font-medium ">Add an Introduction</p>
-                  <p className="text-gray-400 text-sm">
-                    Tells others who you are and the type of work you do
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-center p-4 rounded bg-[#FAFAFF]">
-                <BiEditAlt className="h-8 w-8 text-gray-400" />
-                <div className="flex-1">
-                  <p className="font-medium ">Add an Introduction</p>
-                  <p className="text-gray-400 text-sm">
-                    Tells others who you are and the type of work you do
-                  </p>
-                </div>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>
@@ -289,6 +250,14 @@ const EditProfile = () => {
       <AddEducationModal
         open={eduModal}
         closeModal={() => setEduModal(false)}
+      />
+      <AddWorkExperienceModal
+        open={expModal}
+        closeModal={() => setExpModal(false)}
+      />
+      <AddLinksModal
+        open={linksModal}
+        closeModal={() => setLinksModal(false)}
       />
     </PrivateRoute>
   );

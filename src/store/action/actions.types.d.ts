@@ -55,7 +55,6 @@ export interface MessageItem {
   uid:string 
 }
 
-
 export interface UserResponse {
   profile: {
     _id:string 

@@ -20,6 +20,7 @@ export const AddBioModal = ({open,closeModal,initialValue}:Props) => {
     setSubmitting(true);
     await updateUserDetail({bio})
     setSubmitting(false)
+
     closeModal()
   }
   
