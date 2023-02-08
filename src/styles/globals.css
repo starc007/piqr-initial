@@ -18,6 +18,12 @@
 }
 
 
+@layer base{
+  body{
+    @apply bg-gray-50; 
+  }
+}
+
 @layer components{
 
   .btn__simple {

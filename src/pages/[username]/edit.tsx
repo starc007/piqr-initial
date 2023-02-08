@@ -4,7 +4,7 @@ import SuitcaseIcon from "@components/Icons/SuitcaseIcon";
 import { useAuthStore } from "@store/index";
 import { useRouter } from "next/router";
 import { BiCheck, BiEditAlt, BiX } from "react-icons/bi";
-import { FiGlobe, FiLink } from "react-icons/fi";
+import { FiGlobe, FiLink, FiX } from "react-icons/fi";
 import { HiOutlinePlus } from "react-icons/hi2";
 import PrivateRoute from "@routes/PrivateRoute";
 import { useState } from "react";
@@ -15,39 +15,44 @@ import { EducationItem } from "@store/action/actions.types";
 import { AddWorkExperienceModal } from "@components/EditProfile/AddWorkExperience";
 import moment from "moment";
 import { AddLinksModal } from "@components/EditProfile/AddLinkModal";
+import { deleteEducation } from "@store/action";
+import Button from "@components/UI/Button";
+import EducationSection from "@components/EditProfile/EducationSection";
+import WorkExperienceSection from "@components/EditProfile/WorkExperienceSection";
+import { EditButton } from "@components/EditProfile/EditButton";
 
-const EditButton = ({ onClick }: { onClick?: () => void }) => {
-  return (
-    <button
-      onClick={onClick}
-      className="hover:bg-gray-100 p-1 rounded-md text-gray-400 hover:text-gray-800"
-    >
-      <BiEditAlt className="h-6 w-6" />
-    </button>
-  );
-};
+
 
 const EditProfile = () => {
   const router = useRouter();
   const username = router.query.username as string;
-  const { user, isLoggedIn, updateUserDetail } = useAuthStore();
+  const { user, deleteEducation, deleteExperience, updateUserDetail } =
+    useAuthStore();
   const [bioModal, setBioModal] = useState<boolean>(false);
-  const [eduModal, setEduModal] = useState<boolean>(false);
-  const [expModal, setExpModal] = useState<boolean>(false);
-  const [linksModal, setLinksModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
   const [editName, setEditName] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
+
   const handleUpdateName = async () => {
     setSubmitting(true);
-    updateUserDetail({ name });
+    await updateUserDetail({ name });
     setEditName(false);
     setSubmitting(false);
   };
+
+  const handleDeleteEducation = async (id: string) => {
+    setSubmitting(true);
+    // await deleteEducation(id)
+    // setSubmitting(false)
+  };
   return (
     <PrivateRoute>
-      <div className="p-8">
+      <img
+        src="/mesh.jpeg"
+        className="fixed top-[4rem] left-0 z-[-1] w-screen"
+      />
+      <div className="p-12 bg-white mt-8 overflow-hidden rounded-md shadow-md">
         {/* Avatar */}
         <div className="flex flex-wrap gap-20 md:gap-40 items-start justify-center">
           <div>
@@ -145,97 +150,11 @@ const EditProfile = () => {
           <p className="text-xl font-semibold text-gray-600 md:col-span-2 font">
             A few quick things about yourself
           </p>
-          <div className="flex flex-col gap-4">
-            <button
-              onClick={() => setEduModal(true)}
-              className="flex gap-4 items-center  p-4 rounded bg-gray-100  hover:ring-1 ring-primary duration-100"
-            >
-              <AcademicIcon />
-              <div className="flex-1 text-left">
-                <p className="font-medium ">Add your Education</p>
-                <p className="text-gray-400 text-sm">Add your education</p>
-              </div>
-            </button>
-            {user?.education?.map((item, id) => (
-              <div
-                className="flex gap-4 items-center  p-4 rounded border"
-                key={`edu-${id}`}
-              >
-                {/* <AcademicIcon /> */}
-                <div className="flex-1 text">
-                  <p className="font-medium ">
-                    {item?.degree} | {item?.fieldOfStudy}
-                  </p>
-                  <p className="text-gray-400 text-sm">
-                    {item?.schoolName} ,{" "}
-                    {`${moment(item?.from).format("MMM YYYY")} - ${moment(
-                      item?.to
-                    ).format("MMM YYYY")}`}
-                  </p>
-                </div>
-              </div>
-            ))}
-            {user?.experience.length === 0 && "No education added"}
-          </div>
-          <div className="flex flex-col gap-4">
-            <button
-              onClick={() => setExpModal(true)}
-              className="flex gap-4 items-center  p-4 rounded bg-gray-100  hover:ring-1 ring-primary duration-100"
-            >
-              <SuitcaseIcon />
-              <div className="flex-1 text-left">
-                <p className="font-medium ">Add Position</p>
-                <p className="text-gray-400 text-sm">
-                  Add your position in your current company
-                </p>
-              </div>
-            </button>
-            {user?.experience?.map((item, id) => (
-              <div
-                className="flex gap-4 items-center  p-4 rounded border"
-                key={`edu-${id}`}
-              >
-                {/* <AcademicIcon /> */}
-                <div className="flex-1 text">
-                  <p className="font-medium ">
-                    {item.position} @ {item?.companyName}
-                  </p>
-                  <p className="text-gray-400 text-sm">
-                    {item?.location} ,{" "}
-                    {`${moment(item?.from).format("MMM YYYY")} - ${
-                      item?.to
-                        ? moment(item?.to).format("MMM YYYY")
-                        : item?.current && "Now"
-                    }`}
-                  </p>
-                  <hr className="my-2" />
-                  <p className="text-gray-600 text-sm">{item?.description}</p>
-                </div>
-              </div>
-            ))}
-            {user?.experience.length === 0 && "No positions added"}
-          </div>
+          <EducationSection user={user} />
+          <WorkExperienceSection user={user} />
         </div>
         <hr className="my-8" />
-        <div className=" grid md:grid-cols-5 gap-16 ">
-          <div className="md:col-span-2">
-            <p className="text-xl flex items-center justify-between text-gray-600 col-span-2 font-semibold">
-              Links <EditButton onClick={() => setLinksModal(true)} />
-            </p>
-            <p className="text-sm text-gray-400">
-              Show off your website, social media profiles, or other links.
-            </p>
-          </div>
-          <div className="md:col-span-3">
-            <p className="text-xl text-gray-600 flex items-center justify-between col-span-2 font-medium">
-              Highlights <EditButton />
-            </p>
-            <p className="text-sm text-gray-400">
-              Share what {"you’ve"} been working on!
-            </p>
-           
-          </div>
-        </div>
+       
       </div>
       <AddAvailableForModal
         open={availForModal}
@@ -247,18 +166,8 @@ const EditProfile = () => {
         closeModal={() => setBioModal(false)}
         initialValue={user?.profile?.bio ?? ""}
       />
-      <AddEducationModal
-        open={eduModal}
-        closeModal={() => setEduModal(false)}
-      />
-      <AddWorkExperienceModal
-        open={expModal}
-        closeModal={() => setExpModal(false)}
-      />
-      <AddLinksModal
-        open={linksModal}
-        closeModal={() => setLinksModal(false)}
-      />
+
+    
     </PrivateRoute>
   );
 };
