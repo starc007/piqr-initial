@@ -55,7 +55,13 @@ export interface ActivityItem {
   tags:string[]
   collaborators:string[]
   date:Date
-  
+}
+
+export interface ActivityItemResponse extends ActivityItem {
+  _id:string 
+  createdAt:string 
+  updatedAt:string 
+  user:string
 }
 
 export interface EndorseItem {
@@ -85,6 +91,6 @@ export interface UserResponse {
   }
   education:(EducationItem & {_id:string})[]
   experience:WorkExperienceItem[]
-  activities:unknown[]
+  activities:ActivityItemResponse[]
   socials: SocialsResponse
 }
