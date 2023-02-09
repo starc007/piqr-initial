@@ -1,26 +1,18 @@
-import AcademicIcon from "@components/Icons/AcademicIcon";
 import ProfileIcon from "@components/Icons/ProfileIcon";
-import SuitcaseIcon from "@components/Icons/SuitcaseIcon";
 import { useAuthStore } from "@store/index";
 import { useRouter } from "next/router";
-import { BiCheck, BiEditAlt, BiX } from "react-icons/bi";
-import { FiGlobe, FiLink, FiX } from "react-icons/fi";
+import { BiCheck, BiX } from "react-icons/bi";
+import { FiGlobe } from "react-icons/fi";
 import { HiOutlinePlus } from "react-icons/hi2";
 import PrivateRoute from "@routes/PrivateRoute";
 import { useState } from "react";
 import { AddBioModal } from "@components/EditProfile/AddBioModal";
 import { AddAvailableForModal } from "@components/EditProfile/AddAvailableForModal";
-import { AddEducationModal } from "@components/EditProfile/AddEducation";
-import { EducationItem } from "@store/action/actions.types";
-import { AddWorkExperienceModal } from "@components/EditProfile/AddWorkExperience";
-import moment from "moment";
-import { AddLinksModal } from "@components/EditProfile/AddLinkModal";
-import { deleteEducation } from "@store/action";
-import Button from "@components/UI/Button";
 import EducationSection from "@components/EditProfile/EducationSection";
 import WorkExperienceSection from "@components/EditProfile/WorkExperienceSection";
 import { EditButton } from "@components/EditProfile/EditButton";
-
+import LinksSection from "@components/EditProfile/LinksSection";
+import { ActivitySection } from "@components/EditProfile/ActivitySection";
 
 
 const EditProfile = () => {
@@ -41,11 +33,7 @@ const EditProfile = () => {
     setSubmitting(false);
   };
 
-  const handleDeleteEducation = async (id: string) => {
-    setSubmitting(true);
-    // await deleteEducation(id)
-    // setSubmitting(false)
-  };
+  console.log(user)
   return (
     <PrivateRoute>
       <img
@@ -63,7 +51,7 @@ const EditProfile = () => {
                 className="h-full w-full rounded-full object-center object-cover"
               />
             </div>
-            <p className="text-2xl font-semibold mt-4 flex items-center   gap-4">
+            <div className="text-2xl font-semibold mt-4 flex items-center   gap-4">
               {" "}
               {editName ? (
                 <input
@@ -92,7 +80,7 @@ const EditProfile = () => {
               ) : (
                 <EditButton onClick={() => setEditName(true)} />
               )}
-            </p>
+            </div>
             <div className="md:text-lg flex items-center gap-1 text-gray-600">
               @{username} <FiGlobe className="text-secondary" />
               India
@@ -154,7 +142,10 @@ const EditProfile = () => {
           <WorkExperienceSection user={user} />
         </div>
         <hr className="my-8" />
-       
+        <div className=" grid md:grid-cols-5 gap-16 ">
+                <LinksSection />
+                <ActivitySection />
+        </div>
       </div>
       <AddAvailableForModal
         open={availForModal}
@@ -166,8 +157,6 @@ const EditProfile = () => {
         closeModal={() => setBioModal(false)}
         initialValue={user?.profile?.bio ?? ""}
       />
-
-    
     </PrivateRoute>
   );
 };

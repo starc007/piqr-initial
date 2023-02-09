@@ -5,6 +5,8 @@ import moment from "moment";
 import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
 import { AddEducationModal } from "./AddEducation";
+import { useAmp } from "next/amp";
+import { useAuthStore } from "@store/index";
 
 type Props = {
   user: UserResponse | null;
@@ -13,14 +15,21 @@ type Props = {
 const EducationSection = ({ user }: Props) => {
   const [eduModal, setEduModal] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const deleteEducation = useAuthStore(state=>state.deleteEducation); 
+  
+  const handleDelete = async (id:string) => {
+    setSubmitting(true)
+    await deleteEducation(id);
+    setSubmitting(false)
+  }
+   // TODO : delete education item by id
 
-  // TODO : delete education item by id
   return (
     <>
       <div className="flex flex-col gap-4">
         <button
           onClick={() => setEduModal(true)}
-          className="flex gap-4 items-center  p-4 rounded bg-gray-100  hover:ring-1 ring-primary duration-100"
+          className="flex gap-4 items-center  p-4 rounded border  hover:ring-1 ring-secondary hover:text-secondary hover:shadow-xl duration-100"
         >
           <AcademicIcon />
           <div className="flex-1 text-left">
@@ -28,10 +37,10 @@ const EducationSection = ({ user }: Props) => {
             <p className="text-gray-400 text-sm">Add your education</p>
           </div>
         </button>
-        {user?.education?.map((item, id) => (
+        {user?.education?.map((item) => (
           <div
             className="flex gap-4 group items-center  p-4 rounded border"
-            key={`edu-${id}`}
+            key={`edu-${item?._id}`}
           >
             {/* <AcademicIcon /> */}
             <div className="flex-1 text">
@@ -47,9 +56,10 @@ const EducationSection = ({ user }: Props) => {
             </div>
             <Button
               isLoading={submitting}
-              cls="hidden group-hover:flex bg-red-500 rounded-md  text-white "
+              onClick={()=>handleDelete(item?._id)}
+              cls={`hidden group-hover:flex bg-red-500 rounded-md  text-white`}
             >
-              <FiX className="h-6 w-6" />
+              <FiX className="h-6 w-6 m-1" />
             </Button>
           </div>
         ))}

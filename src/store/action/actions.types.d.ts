@@ -1,4 +1,5 @@
 export interface WorkExperienceItem {
+  _id?:string
   companyName: string;
   position: string;
   description: string;
@@ -6,7 +7,9 @@ export interface WorkExperienceItem {
   to: string;
   current: string;
   location: string;
+user:string
 }
+
 
 export interface EducationItem {
   schoolName: string;
@@ -14,6 +17,7 @@ export interface EducationItem {
   fieldOfStudy: string;
   from: string;
   to: string;
+  user:string
   current: true;
 }
 
@@ -37,12 +41,21 @@ export interface Socials {
   youtube:string 
 }
 
+export interface SocialsResponse extends Socials {
+  _id:string 
+  user:string 
+  updatedAt:string 
+  createdAt:string 
+}
+
 export interface ActivityItem { 
+  _id:string
   title:string 
   description:string 
   tags:string[]
   collaborators:string[]
   date:Date
+  
 }
 
 export interface EndorseItem {
@@ -70,7 +83,8 @@ export interface UserResponse {
     skills: string[]
     availableFor:string[]
   }
-  education:EducationItem[]
+  education:(EducationItem & {_id:string})[]
   experience:WorkExperienceItem[]
   activities:unknown[]
+  socials: SocialsResponse
 }

@@ -3,7 +3,7 @@ import Input, { TextArea } from "@components/UI/Input";
 import Modal from "@components/UI/Modal";
 import { Socials, WorkExperienceItem } from "@store/action/actions.types";
 import { useAuthStore } from "@store/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaTwitter } from "react-icons/fa";
 
@@ -12,16 +12,20 @@ interface Props {
   closeModal: () => void;
 }
 
-export const AddLinksModal = ({ open, closeModal }: Props) => {
-  const { register, handleSubmit, reset } = useForm<Socials>({});
+export const AddLinksModal = ({ open, closeModal  }: Props) => {
+  const {addSocials,user} = useAuthStore((state) => ({addSocials:state.addSocials,user:state.user}));
+
+  const { register, handleSubmit, reset } = useForm<Socials>({defaultValues:user?.socials})
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const addSocials = useAuthStore((state) => state.addSocials);
+
+  useEffect(()=>{
+  },[user])
 
   const handleUpdateBio: SubmitHandler<Socials> = async (data) => {
     setSubmitting(true);
     await addSocials(data);
     setSubmitting(false);
-    reset();
+    reset({} as Socials);
     closeModal();
   };
 

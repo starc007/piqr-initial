@@ -5,8 +5,10 @@ import {
   addSocials,
   addWorkExperience,
   deleteActivity,
+  deleteEducation,
   deleteExperience,
   endorseUser,
+  getUserData,
   loginWithEmail,
   logout,
   updateUserDetail,
@@ -31,6 +33,7 @@ export interface AuthState {
 export interface AuthActions {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  getUserData:() => Promise<void>
   updateUserDetail: (data: Partial<UpdateUserProps>) => Promise<void>;
   addWorkExp: (data: WorkExperienceItem) => Promise<void>;
   addEducation: (data: EducationItem) => Promise<void>;
@@ -58,13 +61,14 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
   ...initialState,
   login:(email, password) => loginWithEmail(set, email, password),
   logout:() => logout(set),
+  getUserData:() => getUserData(set),
   updateUserDetail:(data) => updateUserDetail(set, data),
   addWorkExp:(data) => addWorkExperience(set, data),
   addEducation:(data) => addEducation(set, data),
   addActivity:(data) => addActivity(set,data),
   addSocials:(data) => addSocials(set,data),
   deleteActivity:(id)=> deleteActivity(set,id),
-  deleteEducation: (id)=> deleteActivity(set,id),
+  deleteEducation: (id)=> deleteEducation(set,id),
   deleteExperience:(id)=> deleteExperience(set,id),
   endorseUser:(data) => endorseUser(set,data),
 }));

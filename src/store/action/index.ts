@@ -12,7 +12,7 @@ import {
 } from "./actions.types";
 import { ZAuthSetFunction } from "..";
 
-const getUserData = async (set: ZAuthSetFunction) => {
+export const getUserData = async (set: ZAuthSetFunction) => {
   try {
     const userDataResponse = await API.get("/user");
     if (userDataResponse?.status === 200) {
