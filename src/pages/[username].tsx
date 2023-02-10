@@ -1,6 +1,6 @@
 import Button from "@components/UI/Button";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TimelineItem from "@components/Profile/TimelineItem";
 import CheckedListIcon from "@components/Icons/CheckedListIcon";
 import AcademicIcon from "@components/Icons/AcademicIcon";
@@ -10,11 +10,38 @@ import StarIcon from "@components/Icons/StarIcon";
 import { FiGlobe } from "react-icons/fi";
 import {HiOutlineEnvelope} from "react-icons/hi2"
 import CollaborateIcon from "@components/Icons/CollaborateIcon";
+import { GetServerSideProps } from "next";
+import { API } from "@api/index";
+import { UserResponse } from "@store/action/actions.types";
+import { toast } from "react-hot-toast";
 type Props = {};
 
 const ProfilePage = (props: Props) => {
   const router = useRouter();
   const username = router.query.username as string;
+  const [profile,setProfile] = useState<UserResponse>({} as UserResponse);
+  const [loading,setLoading] = useState<Boolean>(true);
+
+  const getProfileData = async () => {
+    try{
+      if(!username) throw new Error("username not found!")
+      const response = await API.get("/user/"+username);
+      if(response.status === 200){
+        setProfile(response?.data);console.log(response?.data)
+      }
+      setLoading(false)
+    } catch(err:any){
+      console.log(err)
+      if(err?.response?.data?.msg) toast.error(err?.response?.data?.msg)
+    }
+  }
+
+  useEffect(()=>{
+    if(username && !profile?.profile){
+      getProfileData();
+    }
+  },[username])
+
   const data = {
     name: "Sarah Mariam",
     username: username,
@@ -40,10 +67,12 @@ const ProfilePage = (props: Props) => {
   };
   return (
     <section className="section__height lg:px-16 pt-4 md:pt-0 ">
+      <div className="bg-white  p-8 shadow-xl">
+
       <div
         className="grid items-center  lg:grid-cols-2
-       p-4 md:p-8"
-      >
+        p-4 md:p-8"
+        >
         <div className="flex flex-col items-center sm:items-start md:block mb-8">
           {/* Avatar */}
           <div className="p-2 bg-[#FFECCF] h-48 w-48 rounded-full overflow-hidden">
@@ -51,7 +80,7 @@ const ProfilePage = (props: Props) => {
               src={data?.avatarUrl}
               alt="avatar"
               className="h-full w-full rounded-full object-center object-cover"
-            />
+              />
           </div>
           <p className="text-2xl font-semibold mt-4">{data?.name}</p>
           <div className="md:text-lg flex items-center gap-1 text-gray-600">
@@ -130,7 +159,7 @@ const ProfilePage = (props: Props) => {
           title="Builder @ OSVIS - Operating system visualizations"
           subtitle="PDEU"
           type="Education"
-        />
+          />
         <TimelineItem
           dateFrom="Jan 2023"
           dateTo="Feb 2023"
@@ -138,7 +167,7 @@ const ProfilePage = (props: Props) => {
           title="Builder @ OSVIS - Operating system visualizations"
           subtitle="PDEU"
           type="Goal"
-        />
+          />
         <TimelineItem
           dateFrom="Jan 2023"
           dateTo="Feb 2023"
@@ -146,7 +175,7 @@ const ProfilePage = (props: Props) => {
           title="Builder @ OSVIS - Operating system visualizations"
           subtitle="PDEU"
           type="Position"
-        />
+          />
         <TimelineItem
           dateFrom="Jan 2023"
           dateTo="Feb 2023"
@@ -154,7 +183,7 @@ const ProfilePage = (props: Props) => {
           title="Builder @ OSVIS - Operating system visualizations"
           subtitle="PDEU"
           type="Others"
-        />
+          />
         <TimelineItem
           dateFrom="Jan 2023"
           dateTo="Feb 2023"
@@ -163,10 +192,12 @@ const ProfilePage = (props: Props) => {
           subtitle="PDEU"
           type="Others"
           withBorder={false}
-        />
+          />
       </div>
+          </div>
     </section>
   );
 };
 
 export default ProfilePage;
+
