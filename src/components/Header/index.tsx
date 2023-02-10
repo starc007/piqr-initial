@@ -26,7 +26,7 @@ const Header = () => {
             </Link>
           )}
 
-        {isLoggedIn && <Link href={`/${user?.profile?.name}/edit`}>
+        {isLoggedIn && <Link href={`/dashboard/profile`}>
             <HiOutlineUserCircle className="h-8 w-8" />
           </Link>}
         {/* <Button cls="hover:bg-gray-100 rounded-full p-2 text-primary transition duration-300">

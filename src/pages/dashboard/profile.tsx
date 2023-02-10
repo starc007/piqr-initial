@@ -17,7 +17,6 @@ import { ActivitySection } from "@components/EditProfile/ActivitySection";
 
 const EditProfile = () => {
   const router = useRouter();
-  const username = router.query.username as string;
   const { user, deleteEducation, deleteExperience, updateUserDetail } =
     useAuthStore();
   const [bioModal, setBioModal] = useState<boolean>(false);
@@ -81,10 +80,10 @@ const EditProfile = () => {
                 <EditButton onClick={() => setEditName(true)} />
               )}
             </div>
-            <div className="md:text-lg flex items-center gap-1 text-gray-600">
-              @{username} <FiGlobe className="text-secondary" />
+            {/* <div className="md:text-lg flex items-center gap-1 text-gray-600">
+           
               India
-            </div>
+            </div> */}
             <div className="mt-2 text-base text-gray-500 flex items-center">
               0 Following | 2 Followers
             </div>

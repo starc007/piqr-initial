@@ -56,7 +56,6 @@ export const loginWithEmail = async (
       localStorage.setItem("w3Token", res?.data?.accessToken);
       toast.success(res?.data?.msg);
       getUserData(set).then(() => {
-        toast.success("Logged In Successfully");
         Router.push("/");
       });
     }

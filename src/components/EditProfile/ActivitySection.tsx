@@ -2,11 +2,16 @@ import { useState } from "react";
 import { EditButton } from "./EditButton";
 import Input, { TextArea } from "@components/UI/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ActivityItem, ActivityItemResponse } from "@store/action/actions.types";
+import {
+  ActivityItem,
+  ActivityItemResponse,
+} from "@store/action/actions.types";
 import { TagsInput } from "react-tag-input-component";
 import Button from "@components/UI/Button";
 import { useAuthStore } from "@store/index";
 import moment from "moment";
+import { FiX } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 
 /*
   TODO : 
@@ -24,35 +29,68 @@ import moment from "moment";
 
 */
 
-export const ActivityPostItem = ({data}:{data:ActivityItemResponse}) => {
-  return <div className="border p-4 rounded">
-    <p className="text-xl font-semibold">{data?.title}</p>
-    <div className="text-sm text-gray-400">{moment(data.date).format("LL")}</div>
-    <p className="text-gray-600 ">{data?.description}</p>
-    <hr className="my-2" />
-    <div className="flex flex-wrap gap-2">
-      {data?.tags.map((item,key)=>(<div className="bg-gray-100 px-2 py-1 rounded-md text-sm" key={key}>{item}</div>))}
-    </div>
-  </div>
+type ActivityPostProps = {
+  data:ActivityItemResponse,
+  deleteCallback: (is:string) => Promise<void>
 }
+export const ActivityPostItem = ({ data,deleteCallback }: ActivityPostProps) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  
+ 
+  
+  return (
+    <div className="border group relative p-4 rounded">
+      <p className="text-xl font-semibold">{data?.title}</p>
+      <div className="text-sm text-gray-400">
+        {moment(data.date).format("LL")}
+      </div>
+      <p className="text-gray-600 ">{data?.description}</p>
+
+      <Button
+        isLoading={submitting}
+        onClick={() => toast.promise(deleteCallback(data?._id),{
+          loading:"Deleting Post",
+          success: "Post deleted successfully",
+          error:"Something went wrong"
+        })}
+        cls="scale-0 absolute top-4 right-4 group-hover:scale-100 bg-red-500 duration-200 rounded-md  text-white "
+      >
+        <FiX className="h-6 w-6 m-1 " />
+      </Button>
+      <hr className="my-2" />
+      <div className="flex flex-wrap gap-2">
+        {data?.tags.map((item, key) => (
+          <div className="bg-gray-100 px-2 py-1 rounded-md text-sm" key={key}>
+            {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export const ActivitySection = () => {
   const [createMode, setCreateMode] = useState<boolean>(false);
-  const { register,reset,handleSubmit } = useForm<ActivityItem>();
+  const { register, reset, handleSubmit } = useForm<ActivityItem>();
   const labelStyle =
     "text-sm font-semibold text-gray-400 focus-within:text-gray-500 flex flex-col gap-1";
   const inputStyle = "p-2 !border-gray-300";
   const [tags, setTags] = useState<string[]>([]);
   const [collaborators, setCollaborators] = useState<string[]>([]);
-  const [submitting,setSubmitting] = useState<boolean>(false)
-  const {addActivity,activityList} = useAuthStore(state=>({addActivity:state.addActivity,activityList:state?.user?.activities}))
-  
-  const handlePostActivity:SubmitHandler<ActivityItem> = async (data) =>{
-    setSubmitting(true)
-    await addActivity({...data,tags,collaborators})
-    reset()
-    setSubmitting(false)
-  }
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const { addActivity, activityList,deleteActivity } = useAuthStore((state) => ({
+    addActivity: state.addActivity,
+    activityList: state?.user?.activities,
+    deleteActivity:state?.deleteActivity
+  }));
+
+  const handlePostActivity: SubmitHandler<ActivityItem> = async (data) => {
+    setSubmitting(true);
+    await addActivity({ ...data, tags, collaborators });
+    reset();
+    setSubmitting(false);
+  };
+
 
   return (
     <div className="md:col-span-3">
@@ -65,7 +103,10 @@ export const ActivitySection = () => {
       </p>
       {/* Create new activiy section */}
       {createMode && (
-        <form onSubmit={handleSubmit(handlePostActivity)} className="border sadow-sm p-4 rounded-md mt-4 grid gap-4">
+        <form
+          onSubmit={handleSubmit(handlePostActivity)}
+          className="border sadow-sm p-4 rounded-md mt-4 grid gap-4"
+        >
           <p className="font-semibold text-gray-600">Post new activity</p>
           <label className={labelStyle} htmlFor="title">
             Title
@@ -104,13 +145,13 @@ export const ActivitySection = () => {
             Collaborators
             {/* TODO: replace this with tag input */}
             <TagsInput
-                classNames={{ tag: "!pl-3 text-gray-600", input: "!w-full" }}
-                value={collaborators}
-                onChange={setCollaborators}
-                name="collaborators"
-                placeHolder="Enter collaborators "
-                disabled={submitting}
-              />
+              classNames={{ tag: "!pl-3 text-gray-600", input: "!w-full" }}
+              value={collaborators}
+              onChange={setCollaborators}
+              name="collaborators"
+              placeHolder="Enter collaborators "
+              disabled={submitting}
+            />
           </label>
           <label className={labelStyle} htmlFor="date">
             Date
@@ -121,25 +162,26 @@ export const ActivitySection = () => {
               id="date"
               required
               cls={inputStyle}
-              
               disabled={submitting}
             />
           </label>
-            
-          <div >
-          <Button isLoading={submitting} cls=" px-16 h-14 bg-primary text-white rounded-md  font-semibold">
-            Post
-          </Button>
+
+          <div>
+            <Button
+              isLoading={submitting}
+              cls=" px-16 h-14 bg-primary text-white rounded-md  font-semibold"
+            >
+              Post
+            </Button>
           </div>
         </form>
       )}
       {/* Show recent activity */}
       <div className="grid mt-4 gap-4">
-
-      {activityList?.map((item,id)=>(
-        <ActivityPostItem data={item} key={item?._id}/>
+        {activityList?.map((item, id) => (
+          <ActivityPostItem data={item} key={item?._id} deleteCallback={deleteActivity} />
         ))}
-        </div>
+      </div>
     </div>
   );
 };

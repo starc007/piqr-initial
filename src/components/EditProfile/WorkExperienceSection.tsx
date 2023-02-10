@@ -61,9 +61,9 @@ const WorkExperienceSection = ({ user }: Props) => {
               <Button
                 isLoading={submitting}
                 onClick={() => handleDelete(item?._id)}
-                cls="hidden group-hover:flex bg-red-500 rounded-md  text-white "
+                cls="scale-0 group-hover:scale-100 bg-red-500 duration-200 rounded-md  text-white "
               >
-                <FiX className="h-6 w-6" />
+                <FiX className="h-6 w-6 m-1 " />
               </Button>
             </div>
             <hr className="my-2" />
