@@ -76,6 +76,7 @@ export interface MessageItem {
 
 export interface UserResponse {
   profile: {
+    username:string
     _id:string 
     user: {
       _id:string 

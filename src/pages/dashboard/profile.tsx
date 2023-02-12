@@ -17,8 +17,8 @@ import { ActivitySection } from "@components/EditProfile/ActivitySection";
 
 const EditProfile = () => {
   const router = useRouter();
-  const { user, deleteEducation, deleteExperience, updateUserDetail } =
-    useAuthStore();
+  const { user, updateUserDetail } =
+    useAuthStore(state => ({user:state.user,updateUserDetail:state.updateUserDetail}));
   const [bioModal, setBioModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
@@ -32,7 +32,6 @@ const EditProfile = () => {
     setSubmitting(false);
   };
 
-  console.log(user)
   return (
     <PrivateRoute>
       <img
@@ -80,10 +79,9 @@ const EditProfile = () => {
                 <EditButton onClick={() => setEditName(true)} />
               )}
             </div>
-            {/* <div className="md:text-lg flex items-center gap-1 text-gray-600">
-           
-              India
-            </div> */}
+            <div className="md:text-lg font-bold flex items-center gap-1 text-gray-400">
+                @{user?.profile?.username}
+            </div>
             <div className="mt-2 text-base text-gray-500 flex items-center">
               0 Following | 2 Followers
             </div>

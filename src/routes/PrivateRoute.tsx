@@ -11,13 +11,17 @@ interface PrivateRouteProps {
 const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const router = useRouter();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const userId = useAuthStore((state) => state.userId);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
-    if (!isLoggedIn && !userId) {
+    if(isLoggedIn && !user?.profile.username){
+      // if the user has no username send them to onboard page
+      router.push("/onboard")
+    }
+    if (!isLoggedIn) {
       router.push("/login");
     }
-  }, [isLoggedIn, userId]);
+  }, [isLoggedIn, user]);
 
   return <>{children}</>;
 };

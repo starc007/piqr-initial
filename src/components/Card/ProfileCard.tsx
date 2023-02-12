@@ -3,12 +3,14 @@ import Button from "@components/UI/Button";
 import React, { FC } from "react";
 import { FaTelegramPlane, FaFire } from "react-icons/fa";
 import { AiFillFire } from "react-icons/ai";
+import { useAuthStore } from "@store/index";
 
 interface ProfileCardProps {
   title: string;
   name: string;
   openTo: string[];
   img: string;
+  id:string | number
 }
 
 const generateRandomColor = () => {
@@ -26,7 +28,8 @@ const generateRandomColor = () => {
   return randomColor;
 };
 
-const ProfileCard: FC<ProfileCardProps> = ({ title, name, openTo, img }) => {
+const ProfileCard: FC<ProfileCardProps> = ({ id,title, name, openTo, img }) => {
+  const endorse = useAuthStore(state => state.endorseUser)
   return (
     <div className="flex flex-col border rounded-md px-3 py-4 hover:-translate-y-1 transition duration-300 hover:shadow-md">
       <img
@@ -55,7 +58,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ title, name, openTo, img }) => {
           <FaTelegramPlane className="mr-1 text-base" />
           Message
         </Button>
-        <Button cls="text-primary text-xs px-3 py-2 bg-gray-100 rounded-md">
+        <Button onClick={()=>endorse({endorseTo:String(id),message:""})} cls="text-primary text-xs px-3 py-2 bg-gray-100 rounded-md">
           <FaFire className="mr-1 text-base" />
           Endorse
         </Button>

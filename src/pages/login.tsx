@@ -7,7 +7,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthStore } from "@store/index";
 import { useRouter } from "next/router";
 import { API } from "@api/index";
-import { BiError, BiErrorAlt, BiErrorCircle } from "react-icons/bi";
+import { BiErrorCircle } from "react-icons/bi";
+import { useGoogleLogin } from "@react-oauth/google";
 
 interface FormData {
   email: string;
@@ -18,8 +19,13 @@ const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const { register, handleSubmit,setValue } = useForm<FormData>();
-  const { login,isLoggedIn,error} = useAuthStore();
+  const { login,isLoggedIn,error ,loginWithGoogle} = useAuthStore();
 
+  const signInWithGoogle = useGoogleLogin({
+    onSuccess: (tokenResponse:any) => loginWithGoogle(tokenResponse?.code as string),
+    onError: (err) => console.log(err),
+    flow: "auth-code",
+  });
 
   useEffect(()=>{
     // if error occurs , refresh password to empty
@@ -132,7 +138,7 @@ const Login = () => {
               Login
             </Button>
           </form>
-          <Button cls="mt-10 relative w-full px-4 py-4 text-base font-semibold text-primary transition duration-200 bg-white border rounded-md hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
+          <Button onClick={signInWithGoogle} cls="mt-10 relative w-full px-4 py-4 text-base font-semibold text-primary transition duration-200 bg-white border rounded-md hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
             <div className="absolute inset-y-0 left-0 p-4">
               <FcGoogle className="h-6 w-6" />
             </div>

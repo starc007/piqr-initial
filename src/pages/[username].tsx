@@ -1,6 +1,6 @@
 import Button from "@components/UI/Button";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import TimelineItem from "@components/Profile/TimelineItem";
 import CheckedListIcon from "@components/Icons/CheckedListIcon";
 import AcademicIcon from "@components/Icons/AcademicIcon";
@@ -10,37 +10,31 @@ import StarIcon from "@components/Icons/StarIcon";
 import { FiGlobe } from "react-icons/fi";
 import {HiOutlineEnvelope} from "react-icons/hi2"
 import CollaborateIcon from "@components/Icons/CollaborateIcon";
-import { GetServerSideProps } from "next";
 import { API } from "@api/index";
 import { UserResponse } from "@store/action/actions.types";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 type Props = {};
 
 const ProfilePage = (props: Props) => {
   const router = useRouter();
   const username = router.query.username as string;
-  const [profile,setProfile] = useState<UserResponse>({} as UserResponse);
   const [loading,setLoading] = useState<Boolean>(true);
-
-  const getProfileData = async () => {
+  const user = useMemo(async ()=>{
     try{
       if(!username) throw new Error("username not found!")
       const response = await API.get("/user/"+username);
       if(response.status === 200){
-        setProfile(response?.data);console.log(response?.data)
+        return response?.data
       }
       setLoading(false)
     } catch(err:any){
       console.log(err)
-      if(err?.response?.data?.msg) toast.error(err?.response?.data?.msg)
-    }
-  }
-
-  useEffect(()=>{
-    if(username && !profile?.profile){
-      getProfileData();
+      if(err?.response?.data?.msg) 
+      toast.error(err?.response?.data?.msg)
     }
   },[username])
+
 
   const data = {
     name: "Sarah Mariam",
@@ -94,9 +88,9 @@ const ProfilePage = (props: Props) => {
             Suporters : {data?.supporters} | Supporting : {data?.supporting}
           </div>
           <div className="mt-8 flex gap-2">
-            <Button cls=" px-4 gap-4 bg-primary text-white hover:bg-gray-200  rounded-md  font-semibold gap"><CollaborateIcon />Collaborate</Button>
+            <Button cls=" px-4 gap-4 bg-primary text-white   rounded-md  font-semibold gap"><CollaborateIcon />Collaborate</Button>
             <Button cls="btn__secondary-outline">Follow</Button>
-            <Button cls="btn__secondary-outline px-2"><HiOutlineEnvelope className="h-6 w-6"/></Button>
+            <Link href="/inbox" className="btn__secondary-outline px-2"><HiOutlineEnvelope className="h-6 w-6"/></Link>
           </div>
         </div>
         <div className="">

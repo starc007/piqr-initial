@@ -25,6 +25,10 @@
 }
 
 @layer components{
+  [cmdk-item][aria-selected]{
+    @apply bg-gray-100 font-semibold rounded-md 
+  }
+
 
   .btn__simple {
     @apply bg-gray-100 hover:bg-gray-200  focus:ring-black active:bg-gray-300 px-4 py-2 text-black rounded font-medium  duration-200 ease-out

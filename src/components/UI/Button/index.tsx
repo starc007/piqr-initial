@@ -19,7 +19,7 @@ const Button: FC<ButtonProps> = ({
     <button
       {...props}
       disabled={disabled}
-      className={`flex justify-center items-center ${cls} `}
+      className={`flex justify-center disabled:opacity-50  items-center ${cls} `}
     >
       {isLoading ? <Loader /> : children}
     </button>

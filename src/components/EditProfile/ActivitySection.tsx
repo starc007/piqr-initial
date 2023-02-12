@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   ActivityItem,
   ActivityItemResponse,
+  UserResponse,
 } from "@store/action/actions.types";
 import { TagsInput } from "react-tag-input-component";
 import Button from "@components/UI/Button";
@@ -12,6 +13,7 @@ import { useAuthStore } from "@store/index";
 import moment from "moment";
 import { FiX } from "react-icons/fi";
 import { toast } from "react-hot-toast";
+import CollaboratorsInput, { UserListResponse } from "./CollaboratorsInput";
 
 /*
   TODO : 
@@ -76,8 +78,9 @@ export const ActivitySection = () => {
     "text-sm font-semibold text-gray-400 focus-within:text-gray-500 flex flex-col gap-1";
   const inputStyle = "p-2 !border-gray-300";
   const [tags, setTags] = useState<string[]>([]);
-  const [collaborators, setCollaborators] = useState<string[]>([]);
+  const [collaborators, setCollaborators] = useState<UserListResponse[]>([]);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  
   const { addActivity, activityList,deleteActivity } = useAuthStore((state) => ({
     addActivity: state.addActivity,
     activityList: state?.user?.activities,
@@ -86,11 +89,15 @@ export const ActivitySection = () => {
 
   const handlePostActivity: SubmitHandler<ActivityItem> = async (data) => {
     setSubmitting(true);
-    await addActivity({ ...data, tags, collaborators });
+    // TODO : Add collaborators id
+    await addActivity({ ...data, tags });
     reset();
     setSubmitting(false);
   };
 
+  const removeCollaborator = (id:string)=>{
+    setCollaborators(state => state.filter(it=>it._id !== id))
+  }
 
   return (
     <div className="md:col-span-3">
@@ -132,7 +139,7 @@ export const ActivitySection = () => {
             {/* TODO: replace this with tag input */}
             <div>
               <TagsInput
-                classNames={{ tag: "!pl-3 text-gray-600", input: "!w-full" }}
+                classNames={{ tag: "!pl-3 text-gray-600", input: "!w-full text-black" }}
                 value={tags}
                 onChange={setTags}
                 name="tags"
@@ -143,19 +150,16 @@ export const ActivitySection = () => {
           </label>
           <label className={labelStyle} htmlFor="collaborators">
             Collaborators
-            {/* TODO: replace this with tag input */}
-            <TagsInput
-              classNames={{ tag: "!pl-3 text-gray-600", input: "!w-full" }}
-              value={collaborators}
-              onChange={setCollaborators}
-              name="collaborators"
-              placeHolder="Enter collaborators "
-              disabled={submitting}
-            />
+            <CollaboratorsInput collaborators={collaborators} setCollaborators={setCollaborators}  />
           </label>
+          <div className="flex flex-wrap gap-1">
+            {collaborators?.map((item)=>(
+               <div key={item?._id} className="flex items-center gap-2 bg-secondary/10 text-sm py-1 pl-2 pr-1 text-secondary font-medium rounded-full">{item?.username}
+               <button type="button" onClick={()=>removeCollaborator(item?._id)} className="bg-secondary/20 rounded-full p-1"> <FiX/> </button></div> 
+             ))} 
+          </div>
           <label className={labelStyle} htmlFor="date">
             Date
-            {/* TODO: replace this with tag input */}
             <Input
               type="date"
               {...register("date")}
@@ -165,7 +169,6 @@ export const ActivitySection = () => {
               disabled={submitting}
             />
           </label>
-
           <div>
             <Button
               isLoading={submitting}

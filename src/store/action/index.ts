@@ -49,12 +49,12 @@ export const loginWithEmail = async (
 ) => {
   try {
     if (!email || !password) throw new Error("Email or password found!");
-    const res = await API.post("/auth/login", { email, password });
+    const response = await API.post("/auth/login", { email, password });
 
     // if user logged in successfully -> set AccessToken -> get user data -> save to state
-    if (res?.status === 200) {
-      localStorage.setItem("w3Token", res?.data?.accessToken);
-      toast.success(res?.data?.msg);
+    if (response?.status === 200) {
+      localStorage.setItem("w3Token", response?.data?.accessToken);
+      toast.success(response?.data?.msg);
       getUserData(set).then(() => {
         Router.push("/");
       });
@@ -71,10 +71,34 @@ export const loginWithEmail = async (
   }
 };
 
+export const loginWithGoogle = async (set: ZAuthSetFunction,code:string) => {
+  try{
+    const response = await API.post("/auth/login-with-google",{code});
+    if(response.status === 200){
+      // set token 
+      localStorage.setItem("w3Token", response?.data?.accessToken);
+      toast.success(response?.data?.msg);
+      getUserData(set).then(() => {
+        Router.push("/");
+      });
+    }
+  } catch (err:any) {
+    const errResponse = err?.response;
+    // failed to login -> set error
+    if (errResponse?.status === 400) {
+      const errMessage = errResponse?.data?.msg;
+      toast.error(errMessage);
+      set({ isLoggedIn: false, error: errMessage, userId: "", user: null });
+    }
+    console.log("loginWithGoogle", err);
+  }
+}
+
 export const logout = async (set: ZAuthSetFunction) => {
   try {
     const response = await API.post("/auth/logout");
     set({ isLoggedIn: false, userId: "" });
+    localStorage.removeItem("w3Token")
     Router.push("/");
   } catch (err) {
     console.log("logout", err);

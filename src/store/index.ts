@@ -10,6 +10,7 @@ import {
   endorseUser,
   getUserData,
   loginWithEmail,
+  loginWithGoogle,
   logout,
   updateUserDetail,
 } from "./action";
@@ -32,6 +33,7 @@ export interface AuthState {
 
 export interface AuthActions {
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: (code:string) => Promise<void>
   logout: () => Promise<void>;
   getUserData:() => Promise<void>
   updateUserDetail: (data: Partial<UpdateUserProps>) => Promise<void>;
@@ -60,6 +62,7 @@ const initialState: AuthState = {
 export const useAuthStore = create<AuthState & AuthActions>((set) => ({
   ...initialState,
   login:(email, password) => loginWithEmail(set, email, password),
+  loginWithGoogle:(code:string) => loginWithGoogle(set, code),
   logout:() => logout(set),
   getUserData:() => getUserData(set),
   updateUserDetail:(data) => updateUserDetail(set, data),
