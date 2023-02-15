@@ -13,6 +13,7 @@ import WorkExperienceSection from "@components/EditProfile/WorkExperienceSection
 import { EditButton } from "@components/EditProfile/EditButton";
 import LinksSection from "@components/EditProfile/LinksSection";
 import { ActivitySection } from "@components/EditProfile/ActivitySection";
+import { AddSkillsModal } from "@components/EditProfile/AddSkillsModal";
 
 
 const EditProfile = () => {
@@ -24,7 +25,7 @@ const EditProfile = () => {
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
   const [editName, setEditName] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-
+  const [skillModal,setSkillModal] = useState<boolean>(false);
   const handleUpdateName = async () => {
     setSubmitting(true);
     await updateUserDetail({ name });
@@ -129,6 +130,23 @@ const EditProfile = () => {
                 </div>
               ))}
             </div>
+            <hr className="my-4" />
+            <h6 className="flex mb-4 items-center justify-between text-gray-600  text-xl font-semibold">
+              {"Skills"}{" "}
+              <EditButton onClick={() => setSkillModal(true)} />
+            </h6>
+            <div className=" flex flex-wrap gap-2">
+              {user?.profile?.skills.length === 0 && (
+                <span className="text-gray-400">
+                  You have not added any skills.
+                </span>
+              )}
+              {user?.profile?.skills?.map((item: string, idx: number) => (
+                <div className="tag__simple" key={idx}>
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className="mt-8 grid md:grid-cols-2 gap-4">
@@ -154,6 +172,11 @@ const EditProfile = () => {
         closeModal={() => setBioModal(false)}
         initialValue={user?.profile?.bio ?? ""}
       />
+      <AddSkillsModal
+        open={skillModal}
+        closeModal={()=>setSkillModal(false)}
+        initialValue={user?.profile?.skills ?? []}
+        />
     </PrivateRoute>
   );
 };

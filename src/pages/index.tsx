@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Home = () => {
-  return <div>index</div>;
+
+  return <div className="flex section__height items-center justify-center">
+   
+  </div>;
 };
 
 export default Home;

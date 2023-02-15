@@ -5,10 +5,10 @@ import TargetIcon from "@components/Icons/TargetIcon";
 
 interface TimelineItemProps {
   dateFrom: string;
-  dateTo: string;
+  dateTo?: string;
   title: string;
-  subtitle: string;
-  description: string;
+  subtitle?: string;
+  description?: string;
   type: "Education" | "Goal" | "Position" | "Others";
   withBorder?:boolean
 }
@@ -21,10 +21,10 @@ const subtitleColor = {
 };
 
 const renderIcon = {
-  Education: <AcademicIcon/>,
-  Goal:<TargetIcon/>,
-  Position:<SuitcaseIcon />,
-  Others: <StarIcon/>
+  Education: <AcademicIcon className={subtitleColor.Education}/>,
+  Goal:<TargetIcon className={subtitleColor.Goal}/>,
+  Position:<SuitcaseIcon className={subtitleColor.Position}/>,
+  Others: <StarIcon className={subtitleColor.Others}/>
 }
 
 const TimelineItem = ({
@@ -39,11 +39,11 @@ const TimelineItem = ({
   return (
     <div className={`${withBorder && " border-l border-gray-300 border-dashed "} relative ml-8  pl-8 pb-8 border-dashed`}> 
       <div className="text-secondary font-medium">
-        {dateFrom} - {dateTo}{" "}
+        {dateFrom} {dateTo && (` - ${dateTo}`)}
       </div>
-      <div className="text-2xl font-medium mb-4">{title}</div>
+      <div className="text-2xl font-medium ">{title}</div>
 
-      <div className={`${subtitleColor[type]} mb-1 font-medium`}>{subtitle}</div>
+    {subtitle && <div className={`${subtitleColor[type]} mb-1 mt-2 font-medium`}>{subtitle}</div>}
       <p className="text-gray-500 mb-8 ">{description}</p>
       <hr />
       <div className="absolute bg-white rounded-full  p-2 left-0 top-2 -translate-x-[50%]">

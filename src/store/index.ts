@@ -13,6 +13,9 @@ import {
   loginWithGoogle,
   logout,
   updateUserDetail,
+  sendMessage,
+  getAllMessagesByUser,
+  getAllMessages
 } from "./action";
 import {
   UpdateUserProps,
@@ -29,6 +32,7 @@ export interface AuthState {
   userId: string;
   user: UserResponse | null;
   error: string;
+  loading:boolean
 }
 
 export interface AuthActions {
@@ -45,18 +49,19 @@ export interface AuthActions {
   deleteExperience:(id:string) => Promise<void>
   deleteActivity:(id:string) => Promise<void>
   endorseUser:(data:EndorseItem) => Promise<void>
-  // getAllMessages
-  // getAllMessagesByUser
+  sendMessage:(data:{uid:string,message:string}) => Promise<void>
+  getAllMessages:() => Promise<any>
+  getAllMessagesByUser: (userId:string) => Promise<any>
 }
 
 export type ZAuthSetFunction = (partial: (AuthState & AuthActions) | Partial<AuthState & AuthActions> | ((state: AuthState & AuthActions) => (AuthState & AuthActions) | Partial<AuthActions & AuthState>), replace?: boolean | undefined) => void
-
 
 const initialState: AuthState = {
   isLoggedIn: false,
   userId: "",
   user: null,
   error: "",
+  loading:true
 };
 
 export const useAuthStore = create<AuthState & AuthActions>((set) => ({
@@ -73,5 +78,8 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
   deleteActivity:(id)=> deleteActivity(set,id),
   deleteEducation: (id)=> deleteEducation(set,id),
   deleteExperience:(id)=> deleteExperience(set,id),
-  endorseUser:(data) => endorseUser(set,data),
-}));
+  endorseUser:(data) => endorseUser(data),
+  sendMessage:(data) => sendMessage(data),
+  getAllMessagesByUser:(userId) => getAllMessagesByUser(userId),
+  getAllMessages:()=>getAllMessages(),
+ }));

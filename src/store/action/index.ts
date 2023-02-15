@@ -14,6 +14,7 @@ import { ZAuthSetFunction } from "..";
 
 export const getUserData = async (set: ZAuthSetFunction) => {
   try {
+    set({loading:true})
     const userDataResponse = await API.get("/user");
     if (userDataResponse?.status === 200) {
       set({
@@ -21,9 +22,11 @@ export const getUserData = async (set: ZAuthSetFunction) => {
         error: "",
         userId: userDataResponse?.data.profile?.user?._id,
         user: userDataResponse?.data,
+        loading:false
       });
     }
   } catch (err) {
+    set({loading:false})
     console.log("getUserData", err);
   }
 };
@@ -77,7 +80,7 @@ export const loginWithGoogle = async (set: ZAuthSetFunction,code:string) => {
     if(response.status === 200){
       // set token 
       localStorage.setItem("w3Token", response?.data?.accessToken);
-      toast.success(response?.data?.msg);
+      toast.success("Login Successfull");
       getUserData(set).then(() => {
         Router.push("/");
       });
@@ -194,23 +197,47 @@ export const deleteActivity = async (set:ZAuthSetFunction,id:string) => {
   }
 }
 
-export const endorseUser = async(set:ZAuthSetFunction,data:EndorseItem)=>{
+export const endorseUser = async(data:EndorseItem)=>{
   try{
     const response = await API.post("/user/endorse",data);
     if(response.status === 200){
-      getUserData(set).then(() => {
-        toast.success("Saved!");
-      });
+        toast.success("Endorsed successfully!");
+    }
+  } catch(err){
+    toast.error("Failed to endorse !")
+    console.log(err)
+  }
+}
+
+export const sendMessage = async (data:{uid:string,message:string}) => {
+  try{
+    const response = await API.post("/user/message",data);
+    if(response?.status === 200){
+      toast.success("Message Sent!")
+    }
+  } catch(err){
+    toast.success("Failed to Send!")
+    console.log(err)
+  }
+}
+export const getAllMessages= async () => {
+  try{
+    const res = await API.get("/message")
+    if(res?.status === 200){
+      return res?.data
     }
   } catch(err){
     console.log(err)
   }
 }
 
-export const getAllMessages= async (set:ZAuthSetFunction,data:MessageItem[]) => {
-
-}
-
-export const getAllMessagesByUser = async(set:ZAuthSetFunction,data:MessageItem[]) => {
-  
+export const getAllMessagesByUser = async(userId:string) => {
+  try{
+    const res = await API.get("/message/"+userId)
+    if(res?.status === 200) {
+      return res?.data
+    }
+  } catch(err){
+    console.log(err)
+  }
 }

@@ -27,6 +27,6 @@
       "@icons/*":["src/components/Icons/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/UI/TagsInput"],
   "exclude": ["node_modules"]
 }

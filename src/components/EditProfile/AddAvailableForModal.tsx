@@ -1,8 +1,8 @@
 import Button from "@components/UI/Button";
 import Modal from "@components/UI/Modal";
+import { TagsInput } from "@components/UI/TagsInput";
 import { useAuthStore } from "@store/index";
 import { useState } from "react";
-import { TagsInput } from "react-tag-input-component";
 
 
 interface Props {
@@ -35,7 +35,7 @@ export const AddAvailableForModal = ({open,closeModal,initialValue}:Props) => {
         Stuff you are available for
         </label>
         <div>
-          <TagsInput classNames={{tag:"!pl-3"}} value={availableFor} onChange={setAvailableFor} name="availableFor" placeHolder="Eg . Full Time Roles " />
+        <TagsInput placeholder="Type something.." tags={availableFor} setTags={setAvailableFor}  autocomplete={false}/>
         </div>
         <div className="flex items-center justify-center mt-4 gap-4">
         <Button onClick={closeModal} disabled={submitting} cls="w-full h-14 w-full bg-gray-100 hover:bg-gray-200  rounded-md  font-semibold">

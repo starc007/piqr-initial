@@ -26,7 +26,7 @@
 
 @layer components{
   [cmdk-item][aria-selected]{
-    @apply bg-gray-100 font-semibold rounded-md 
+    @apply bg-gray-100  text-black
   }
 
 
@@ -37,7 +37,7 @@
     @apply border-secondary text-secondary font-medium border px-4 py-2 rounded hover:shadow-xl duration-200 ease-out;
   }
   .tag__simple {
-    @apply rounded border py-2 px-3 hover:bg-gray-50 hover:border-gray-400 cursor-pointer duration-300 ease-out
+    @apply rounded border py-2 px-3 hover:bg-gray-50 hover:border-gray-400 cursor-pointer duration-300 ease-out;
   }
 }
 

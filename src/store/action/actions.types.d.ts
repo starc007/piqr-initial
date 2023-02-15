@@ -83,7 +83,7 @@ export interface UserResponse {
       email:string 
       role:string 
       firstTime:false
-    }
+    } | string
     bio?:string
     name:string 
     avatar:string 
