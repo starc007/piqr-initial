@@ -12,24 +12,20 @@ type Props = {
 };
 
 type LinkItemProps = {
-  title: string;
+  title:string
   href: string;
   icon: React.ReactNode;
 };
 
-export const LinkItem = ({ title, href, icon }: LinkItemProps) => {
+export const LinkItem = ({ href, icon,title }: LinkItemProps) => {
   if (!href) return <></>;
   return (
-    <Link href={""} target="_blank" rel="noreferrer">
-      <div className="border p-4 flex group items-center gap-4 text-gray-600 rounded-md hover:border-secondary hover:text-secondary hover:bg-secondary/10 duration-100">
+    <Link href={href} aria-label={title} target="_blank" rel="noreferrer">
+      <div className="border p-4 rounded-md hover:border-secondary group relative hover:text-secondary hover:bg-secondary/10 duration-100">
         {icon}
-        <div className="flex-1">
-          <p className="text-sm font-semibold">{title}</p>
-          <p className="text-sm group-hover:underline underline-offset-4">
-            {href}
-          </p>
+        <div className="hidden group-hover:block -bottom-8 text-sm absolute text-center left-[50%] -translate-x-[50%] bg-white border border-secondary py-0.5 px-1 shadow-lg  rounded-md" >
+          {title}
         </div>
-        <FaExternalLinkAlt className="hidden group-hover:block" />
       </div>
     </Link>
   );
@@ -91,7 +87,7 @@ const LinksSection = (props: Props) => {
         <p className="text-sm text-gray-400">
           Show off your website, social media profiles, or other links.
         </p>
-        <div className="grid gap-4 mt-4">
+        <div className="flex flex-wrap gap-4 mt-4">
     {links.map((item)=>(<LinkItem href={item.href} key={item?.title} title={item?.title} icon={item?.icon} />))}
         </div>
       </div>

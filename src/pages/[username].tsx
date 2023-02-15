@@ -93,7 +93,7 @@ const ProfilePage = (props: Props) => {
             </div>
             <p className="text-2xl font-semibold mt-4">{profile?.profile?.name}</p>
             <div className="md:text-lg flex items-center gap-1 text-gray-600">
-              @{username} <FiGlobe className="text-secondary" />
+              @{username}
               {/* {profile?.profile?.location} */}
             </div>
             <div className="md:text-lg text-gray-600">
@@ -121,6 +121,16 @@ const ProfilePage = (props: Props) => {
             </h6>
             <div className=" flex flex-wrap gap-2">
               {profile?.profile?.availableFor?.map((item, idx) => (
+                <div className="tag__simple" key={idx}>
+                  {item}
+                </div>
+              ))}
+            </div>
+            <h6 className="mt-8 mb-4 text-primary text-2xl block">
+              {"My Skills"}
+            </h6>
+            <div className=" flex flex-wrap gap-2">
+              {profile?.profile?.skills?.map((item, idx) => (
                 <div className="tag__simple" key={idx}>
                   {item}
                 </div>

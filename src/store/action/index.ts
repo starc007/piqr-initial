@@ -211,12 +211,12 @@ export const endorseUser = async(data:EndorseItem)=>{
 
 export const sendMessage = async (data:{uid:string,message:string}) => {
   try{
-    const response = await API.post("/user/message",data);
+    const response = await API.post("/message",data);
     if(response?.status === 200){
       toast.success("Message Sent!")
     }
   } catch(err){
-    toast.success("Failed to Send!")
+    toast.error("Failed to Send!")
     console.log(err)
   }
 }
