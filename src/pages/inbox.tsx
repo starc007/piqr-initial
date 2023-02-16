@@ -1,3 +1,4 @@
+import ChatBox from "@components/Inbox/ChatBox";
 import Input from "@components/UI/Input";
 import PrivateRoute from "@routes/PrivateRoute";
 import { useAuthStore } from "@store/index";
@@ -16,12 +17,13 @@ interface MessagesResponse {
   };
 }
 
-interface MessageItem {
+export interface ChatMessageItem {
   message: string;
   sender: string;
   timestamp: string;
   _id: string;
 }
+
 const Inbox = (props: Props) => {
   const [chats, setChats] = useState<MessagesResponse[]>([]);
   const { getAllMessages, getMessagesByUser } = useAuthStore((state) => ({
@@ -32,7 +34,7 @@ const Inbox = (props: Props) => {
     id: string;
     email: string;
   }>({} as { id: string; email: string });
-  const [messages, setMessages] = useState<MessageItem[]>([]);
+  const [messages, setMessages] = useState<ChatMessageItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   // get all messages
@@ -107,18 +109,7 @@ const Inbox = (props: Props) => {
                   <div className="bg-gray-100 animate-pulse h-10 w-56 px-4 py-2 rounded-md text-white rounded-tl-none"></div>
                 </div>
               ) : (
-                <div className="space-y-4 w-full">
-                  {messages?.map((item) => (
-                    <div key={item?._id}>
-                      <div className="bg-secondary max-w-fit px-4 py-2 rounded-md text-white rounded-tl-none">
-                        {item?.message}
-                      </div>
-                      <span className="text-sm text-gray-400">
-                        {moment(item?.timestamp).calendar()}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+               <ChatBox data={messages}/>
               )}
             </>
           ) : (

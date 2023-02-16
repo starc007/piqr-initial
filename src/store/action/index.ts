@@ -234,6 +234,7 @@ export const getAllMessages = async () => {
     }
   } catch (err) {
     console.log(err);
+    toast.error("Failed to load messages !")
   }
 };
 

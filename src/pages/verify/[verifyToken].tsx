@@ -3,18 +3,21 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Loader from "@components/Loader";
 import { BiErrorAlt } from "react-icons/bi";
+import { useAuthStore } from "@store/index";
 type Props = {};
 
 const VerifyToken = (props: Props) => {
   const [err, setErr] = useState<string>("");
   const router = useRouter();
   const token = router.query.verifyToken as string;
-
+  const getUserData = useAuthStore(state=>state.getUserData)
   const verifyEmailLogin = async () => {
     try {
       const res = await API.post("/auth/verify", { token });
       if (res.data) {
-        if (res.data?.success) router.push("/onboard");
+        if (res.data?.success){
+          getUserData().then(()=>{router.push("/onboard")})
+        } 
         console.log(res.data);
       }
     } catch (err) {

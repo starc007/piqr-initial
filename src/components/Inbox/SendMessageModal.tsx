@@ -20,6 +20,7 @@ export const SendMessageModal = ({ open, closeModal,userId,name }: Props) => {
     setSubmitting(true);
     await sendMessage({uid:userId,message:msg});
     setSubmitting(false);
+    setMsg("")
     closeModal();
   };
 

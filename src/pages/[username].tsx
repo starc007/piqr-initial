@@ -198,7 +198,7 @@ const ProfilePage = (props: Props) => {
                   profile?.experience.length > 0 &&
                   `${profile?.experience[0]?.position} , ${profile?.experience[0]?.companyName}`}
               </div>
-              {username !== profile?.profile?.username && <div className="mt-8 flex gap-2">
+              {userId !== profile?.profile?.user && <div className="mt-8 flex gap-2">
                 <Button
                   onClick={() => setMsgModal(true)}
                   cls=" px-4 gap-4 bg-primary text-white   rounded-md  font-semibold gap"
