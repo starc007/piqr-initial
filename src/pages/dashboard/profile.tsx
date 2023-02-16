@@ -2,7 +2,6 @@ import ProfileIcon from "@components/Icons/ProfileIcon";
 import { useAuthStore } from "@store/index";
 import { useRouter } from "next/router";
 import { BiCheck, BiX } from "react-icons/bi";
-import { FiGlobe } from "react-icons/fi";
 import { HiOutlinePlus } from "react-icons/hi2";
 import PrivateRoute from "@routes/PrivateRoute";
 import { useState } from "react";
@@ -14,18 +13,21 @@ import { EditButton } from "@components/EditProfile/EditButton";
 import LinksSection from "@components/EditProfile/LinksSection";
 import { ActivitySection } from "@components/EditProfile/ActivitySection";
 import { AddSkillsModal } from "@components/EditProfile/AddSkillsModal";
-
+import Link from "next/link";
+import Button from "@components/UI/Button";
 
 const EditProfile = () => {
   const router = useRouter();
-  const { user, updateUserDetail } =
-    useAuthStore(state => ({user:state.user,updateUserDetail:state.updateUserDetail}));
+  const { user, updateUserDetail } = useAuthStore((state) => ({
+    user: state.user,
+    updateUserDetail: state.updateUserDetail,
+  }));
   const [bioModal, setBioModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
   const [editName, setEditName] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [skillModal,setSkillModal] = useState<boolean>(false);
+  const [skillModal, setSkillModal] = useState<boolean>(false);
   const handleUpdateName = async () => {
     setSubmitting(true);
     await updateUserDetail({ name });
@@ -59,7 +61,7 @@ const EditProfile = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
               ) : (
-                name
+                user?.profile?.name
               )}
               {editName ? (
                 <div>
@@ -80,12 +82,13 @@ const EditProfile = () => {
                 <EditButton onClick={() => setEditName(true)} />
               )}
             </div>
-            <div className="md:text-lg font-bold flex items-center gap-1 text-gray-400">
-                @{user?.profile?.username}
+            <div className="md:text-lg mb-4 font-bold flex items-center gap-1 text-gray-400">
+              @{user?.profile?.username}
             </div>
-            <div className="mt-2 text-base text-gray-500 flex items-center">
-              0 Following | 2 Followers
-            </div>
+            <Link href={"/"+user?.profile?.username} className="btn__secondary-outline ">
+              View Profile 
+
+            </Link>
           </div>
           <div className="flex-1">
             {user?.profile?.bio ? (
@@ -132,8 +135,7 @@ const EditProfile = () => {
             </div>
             <hr className="my-4" />
             <h6 className="flex mb-4 items-center justify-between text-gray-600  text-xl font-semibold">
-              {"Skills"}{" "}
-              <EditButton onClick={() => setSkillModal(true)} />
+              {"Skills"} <EditButton onClick={() => setSkillModal(true)} />
             </h6>
             <div className=" flex flex-wrap gap-2">
               {user?.profile?.skills.length === 0 && (
@@ -158,8 +160,8 @@ const EditProfile = () => {
         </div>
         <hr className="my-8" />
         <div className=" grid md:grid-cols-5 gap-16 ">
-                <LinksSection />
-                <ActivitySection />
+          <LinksSection />
+          <ActivitySection />
         </div>
       </div>
       <AddAvailableForModal
@@ -174,9 +176,9 @@ const EditProfile = () => {
       />
       <AddSkillsModal
         open={skillModal}
-        closeModal={()=>setSkillModal(false)}
+        closeModal={() => setSkillModal(false)}
         initialValue={user?.profile?.skills ?? []}
-        />
+      />
     </PrivateRoute>
   );
 };

@@ -1,0 +1,1 @@
+export const SKILL_CATEGORIES = ["Frontend","Backend","DevRel","Fullstack","Web3","Designer"]

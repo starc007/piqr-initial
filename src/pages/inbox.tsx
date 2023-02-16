@@ -44,7 +44,7 @@ const Inbox = (props: Props) => {
 
   //get the current Chat
   useEffect(() => {
-    if (selectedChat) {
+    if (selectedChat?.id) {
       setLoading(true);
       getMessagesByUser(selectedChat.id)
         .then((res) => {
@@ -73,7 +73,8 @@ const Inbox = (props: Props) => {
             cls="bg-gray-50 w-full h-10 pl-10 pr-4"
             />
         </div> */}
-          {chats.map((item) => (
+          {chats?.length === 0 && (<span className="text-center mt-4">No {"one's"} here</span>)}
+          {chats?.map((item) => (
             <button
               key={item?.messageDataId}
               onClick={() =>

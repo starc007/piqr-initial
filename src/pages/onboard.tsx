@@ -8,6 +8,8 @@ import Loader from '@components/Loader'
 import { useAuthStore } from '@store/index'
 import Router from 'next/router'
 import PrivateRoute from '@routes/PrivateRoute'
+import { TagsInput } from '@components/UI/TagsInput'
+import { SKILL_CATEGORIES } from 'src/constants'
 type Props = {}
 
 type FormData = {
@@ -21,9 +23,10 @@ const Onboard = (props: Props) => {
   const [loading,setLoading] = useState<boolean>(false);
   const [checking,setChecking] = useState<boolean>(false)
   const updateProfile = useAuthStore(state => state.updateUserDetail)
+  const [skills,setSkills] = useState<string[]>([])
   
   const checkIfUsernameTaken = debounce(async (e:ChangeEvent<HTMLInputElement>) => {
-  try{
+    try{
     const username = e.target.value
     console.log(username,"checking")
     if(!username) {
@@ -49,7 +52,7 @@ const Onboard = (props: Props) => {
 
   const handleOnboard:SubmitHandler<FormData> = async (data) => {
     setLoading(true);
-    await updateProfile(data).then(()=>Router.push("/"))
+    await updateProfile({...data,skills}).then(()=>Router.push("/"))
     setLoading(false)
 
   }
@@ -107,6 +110,14 @@ const Onboard = (props: Props) => {
                   placeholder="Tell us something about yourself"
                   cls="w-full p-4"
                   />
+                </div>
+            </div> 
+            <div className="mt-4">
+              <label className="text-base font-medium text-gray-900">
+              Add Skills
+              </label>
+              <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
+              <TagsInput className="!p-4" placeholder="Type something.." tags={skills} setTags={setSkills} suggestions={SKILL_CATEGORIES} autocomplete/>
                 </div>
             </div> 
 

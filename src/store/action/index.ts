@@ -14,7 +14,7 @@ import { ZAuthSetFunction } from "..";
 
 export const getUserData = async (set: ZAuthSetFunction) => {
   try {
-    set({loading:true})
+    set({ loading: true });
     const userDataResponse = await API.get("/user");
     if (userDataResponse?.status === 200) {
       set({
@@ -22,11 +22,11 @@ export const getUserData = async (set: ZAuthSetFunction) => {
         error: "",
         userId: userDataResponse?.data.profile?.user?._id,
         user: userDataResponse?.data,
-        loading:false
+        loading: false,
       });
     }
   } catch (err) {
-    set({loading:false})
+    set({ loading: false });
     console.log("getUserData", err);
   }
 };
@@ -58,9 +58,13 @@ export const loginWithEmail = async (
     if (response?.status === 200) {
       localStorage.setItem("w3Token", response?.data?.accessToken);
       toast.success(response?.data?.msg);
-      getUserData(set).then(() => {
-        Router.push("/");
-      });
+      if (response?.data?.msg === "Please verify your email") {
+        Router.push("/login?sent=true");
+      } else {
+        getUserData(set).then(() => {
+          Router.push("/");
+        });
+      }
     }
   } catch (err: any) {
     const errResponse = err?.response;
@@ -74,18 +78,18 @@ export const loginWithEmail = async (
   }
 };
 
-export const loginWithGoogle = async (set: ZAuthSetFunction,code:string) => {
-  try{
-    const response = await API.post("/auth/login-with-google",{code});
-    if(response.status === 200){
-      // set token 
+export const loginWithGoogle = async (set: ZAuthSetFunction, code: string) => {
+  try {
+    const response = await API.post("/auth/login-with-google", { code });
+    if (response.status === 200) {
+      // set token
       localStorage.setItem("w3Token", response?.data?.accessToken);
       toast.success("Login Successfull");
       getUserData(set).then(() => {
         Router.push("/");
       });
     }
-  } catch (err:any) {
+  } catch (err: any) {
     const errResponse = err?.response;
     // failed to login -> set error
     if (errResponse?.status === 400) {
@@ -95,13 +99,13 @@ export const loginWithGoogle = async (set: ZAuthSetFunction,code:string) => {
     }
     console.log("loginWithGoogle", err);
   }
-}
+};
 
 export const logout = async (set: ZAuthSetFunction) => {
   try {
     const response = await API.post("/auth/logout");
     set({ isLoggedIn: false, userId: "" });
-    localStorage.removeItem("w3Token")
+    localStorage.removeItem("w3Token");
     Router.push("/");
   } catch (err) {
     console.log("logout", err);
@@ -131,7 +135,6 @@ export const addEducation = async (
     });
   }
 };
-
 export const addSocials = async (set: ZAuthSetFunction, data: Socials) => {
   try {
     const updateRes = await API.post("/user/social", data);
@@ -145,7 +148,10 @@ export const addSocials = async (set: ZAuthSetFunction, data: Socials) => {
   }
 };
 
-export const addActivity = async (set: ZAuthSetFunction, data: ActivityItem) => {
+export const addActivity = async (
+  set: ZAuthSetFunction,
+  data: ActivityItem
+) => {
   try {
     const updateRes = await API.post("/user/activity", data);
     if (updateRes.status === 200) {
@@ -158,86 +164,86 @@ export const addActivity = async (set: ZAuthSetFunction, data: ActivityItem) => 
   }
 };
 
-export const deleteEducation = async (set:ZAuthSetFunction,id:string) => {
-  try{
-    const delResponse = await API.delete("/user/education/"+id);
-    if(delResponse?.status === 200){
+export const deleteEducation = async (set: ZAuthSetFunction, id: string) => {
+  try {
+    const delResponse = await API.delete("/user/education/" + id);
+    if (delResponse?.status === 200) {
       getUserData(set).then(() => {
         toast.success("Saved!");
       });
     }
-  }catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-}
+};
 
-export const deleteExperience= async (set:ZAuthSetFunction,id:string) => {
-  try{
-    const delResponse = await API.delete("/user/experience/"+id);
-    if(delResponse?.status === 200){
+export const deleteExperience = async (set: ZAuthSetFunction, id: string) => {
+  try {
+    const delResponse = await API.delete("/user/experience/" + id);
+    if (delResponse?.status === 200) {
       getUserData(set).then(() => {
         toast.success("Saved!");
       });
     }
-  }catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-}
+};
 
-export const deleteActivity = async (set:ZAuthSetFunction,id:string) => {
-  try{
-    const delResponse = await API.delete("/user/activity/"+id);
-    if(delResponse?.status === 200){
+export const deleteActivity = async (set: ZAuthSetFunction, id: string) => {
+  try {
+    const delResponse = await API.delete("/user/activity/" + id);
+    if (delResponse?.status === 200) {
       getUserData(set).then(() => {
         toast.success("Saved!");
       });
     }
-  }catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-}
+};
 
-export const endorseUser = async(data:EndorseItem)=>{
-  try{
-    const response = await API.post("/user/endorse",data);
-    if(response.status === 200){
-        toast.success("Endorsed successfully!");
+export const endorseUser = async (data: EndorseItem) => {
+  try {
+    const response = await API.post("/user/endorse", data);
+    if (response.status === 200) {
+      toast.success("Endorsed successfully!");
     }
-  } catch(err){
-    toast.error("Failed to endorse !")
-    console.log(err)
+  } catch (err) {
+    toast.error("Failed to endorse !");
+    console.log(err);
   }
-}
+};
 
-export const sendMessage = async (data:{uid:string,message:string}) => {
-  try{
-    const response = await API.post("/message",data);
-    if(response?.status === 200){
-      toast.success("Message Sent!")
+export const sendMessage = async (data: { uid: string; message: string }) => {
+  try {
+    const response = await API.post("/message", data);
+    if (response?.status === 200) {
+      toast.success("Message Sent!");
     }
-  } catch(err){
-    toast.error("Failed to Send!")
-    console.log(err)
+  } catch (err) {
+    toast.error("Failed to Send!");
+    console.log(err);
   }
-}
-export const getAllMessages= async () => {
-  try{
-    const res = await API.get("/message")
-    if(res?.status === 200){
-      return res?.data
+};
+export const getAllMessages = async () => {
+  try {
+    const res = await API.get("/message");
+    if (res?.status === 200) {
+      return res?.data;
     }
-  } catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-}
+};
 
-export const getAllMessagesByUser = async(userId:string) => {
-  try{
-    const res = await API.get("/message/"+userId)
-    if(res?.status === 200) {
-      return res?.data
+export const getAllMessagesByUser = async (userId: string) => {
+  try {
+    const res = await API.get("/message/" + userId);
+    if (res?.status === 200) {
+      return res?.data;
     }
-  } catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-}
+};

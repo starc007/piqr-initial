@@ -14,7 +14,7 @@ const VerifyToken = (props: Props) => {
     try {
       const res = await API.post("/auth/verify", { token });
       if (res.data) {
-        if (res.data?.success) router.push("/");
+        if (res.data?.success) router.push("/onboard");
         console.log(res.data);
       }
     } catch (err) {

@@ -31,7 +31,7 @@ const UserMenu = (props: Props) => {
           <DropdownItem className="flex items-center gap-2 text-gray-600 hover:text-black"><TbMessage className="text-xl"/> Inbox</DropdownItem>
     </Link>
         <hr />
-          <DropdownItem onClick={logout} className="flex hover:text-red-500 gap-2 items-center text-gray-600 "><FiLogOut className="text-xl"/> Logout </DropdownItem>
+        <DropdownItem onClick={logout} className="flex hover:text-red-500 gap-2 items-center text-gray-600 "><FiLogOut className="text-xl"/> Logout </DropdownItem>
       </DropdownContent>
     </Dropdown>
   );

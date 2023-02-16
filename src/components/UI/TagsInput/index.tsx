@@ -13,6 +13,7 @@ interface TagsInputProps {
   setTags:Dispatch<SetStateAction<string[]>>
   placeholder?:string
   autocomplete?:boolean
+  className?:string
 }
 
 interface TagProps {
@@ -25,18 +26,18 @@ export const Tag = ({ text, removeTagFn,}: TagProps) => {
   return (
     <div className="flex items-center w-fit gap-2 bg-secondary/10 text-sm py-1 pl-2 pr-1 text-secondary font-medium rounded-full">
       {text}
-      <button
+     {removeTagFn && <button
         type="button"
         onClick={removeTagFn}
         className="bg-secondary/20 rounded-full p-1"
       >
         <FiX />
-      </button>
+      </button>}
     </div>
   );
 };
 
-export const TagsInput = ({ suggestions,placeholder,tags,setTags,autocomplete,...props }: TagsInputProps) => {
+export const TagsInput = ({ className,suggestions,placeholder,tags,setTags,autocomplete,...props }: TagsInputProps) => {
   const [filteredItems,setFilteredItems] = useState<string[]>(suggestions ?? []); 
   const [value, setValue] = useState<string>("");
   const [open,setOpen] = useState<boolean>(false)
@@ -84,7 +85,7 @@ export const TagsInput = ({ suggestions,placeholder,tags,setTags,autocomplete,..
           value={value}
           placeholder={placeholder}
           onValueChange={(search) => setValue(search)}
-          className="p-2 rounded-md w-full border hover:border-primary group-focus:border-primary text-black focus-within:outline-none"
+          className={"p-2 rounded-md w-full border hover:border-primary group-focus:border-primary text-black focus-within:outline-none " + className}
         />
        {value && <Command.List  className=" absolute max-h-40 z-50 overflow-y-scroll translate-y-2 divide-y text-sm bg-white w-full rounded-md overflow-hidden py-2 shadow-xl border border-gray-300 flex flex-col">
         <Command.Empty className="text-gray-400 pl-3 ">
