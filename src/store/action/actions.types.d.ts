@@ -1,5 +1,5 @@
 export interface WorkExperienceItem {
-  _id?:string
+  _id?: string;
   companyName: string;
   position: string;
   description: string;
@@ -7,9 +7,8 @@ export interface WorkExperienceItem {
   to: string;
   current: string;
   location: string;
-user:string
+  user: string;
 }
-
 
 export interface EducationItem {
   schoolName: string;
@@ -17,7 +16,7 @@ export interface EducationItem {
   fieldOfStudy: string;
   from: string;
   to: string;
-  user:string
+  user: string;
   current: true;
 }
 
@@ -31,67 +30,70 @@ export interface UpdateUserProps {
 }
 
 export interface Socials {
-  facebook : string 
-  twitter: string 
-  instagram : string 
-  linkedin : string 
-  behance:string 
-  dribble :string 
-  website:string 
-  youtube:string 
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedin: string;
+  behance: string;
+  dribble: string;
+  website: string;
+  youtube: string;
 }
 
 export interface SocialsResponse extends Socials {
-  _id:string 
-  user:string 
-  updatedAt:string 
-  createdAt:string 
+  _id: string;
+  user: string;
+  updatedAt: string;
+  createdAt: string;
 }
 
-export interface ActivityItem { 
-  _id:string
-  title:string 
-  description:string 
-  tags:string[]
-  collaborators:string[]
-  date:Date
+export interface ActivityItem {
+  _id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  collaborators: string[];
+  date: Date;
 }
 
 export interface ActivityItemResponse extends ActivityItem {
-  _id:string 
-  createdAt:string 
-  updatedAt:string 
-  user:string
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  user: string;
 }
 
 export interface EndorseItem {
-  message:string 
-  endorseTo:string
+  message: string;
+  endorseTo: string;
 }
 
 export interface MessageItem {
-  message:string 
-  uid:string 
+  message: string;
+  uid: string;
 }
 
 export interface UserResponse {
   profile: {
-    username:string
-    _id:string 
-    user: {
-      _id:string 
-      email:string 
-      role:string 
-      firstTime:false
-    } | string
-    bio?:string
-    name:string 
-    avatar:string 
-    skills: string[]
-    availableFor:string[]
-  }
-  education:(EducationItem & {_id:string})[]
-  experience:WorkExperienceItem[]
-  activities:ActivityItemResponse[]
-  socials: SocialsResponse
+    username: string;
+    _id: string;
+    user:
+      | {
+          _id: string;
+          email: string;
+          role: string;
+          firstTime: false;
+        }
+      | string;
+    bio?: string;
+    name: string;
+    avatar: string;
+    skills: string[];
+    availableFor: string[];
+    title: string;
+  };
+  education: (EducationItem & { _id: string })[];
+  experience: WorkExperienceItem[];
+  activities: ActivityItemResponse[];
+  socials: SocialsResponse;
 }

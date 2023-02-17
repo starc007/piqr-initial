@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Button from "@components/UI/Button";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -31,6 +32,21 @@ const ProfilePage = (props: Props) => {
   const [endorseModal, setEndorseModal] = useState<boolean>(false);
   const [msgModal, setMsgModal] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("all");
+
+  const generateRandomColor = () => {
+    const colors = [
+      "bg-indigo-50",
+      "bg-pink-50",
+      "bg-purple-50",
+      "bg-blue-50",
+      "bg-gray-50",
+      "bg-green-50",
+      "bg-yellow-50",
+      "bg-red-50",
+    ];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    return randomColor;
+  };
 
   const showAll = () => {
     if (category === "all") {
@@ -172,11 +188,8 @@ const ProfilePage = (props: Props) => {
     <>
       <section className="section__height lg:px-16 pt-4 md:pt-0 ">
         <div className="bg-white  p-8  border-x ">
-          <div
-            className="grid items-center  lg:grid-cols-2
-        p-4 md:p-8"
-          >
-            <div className="flex flex-col items-center sm:items-start md:block mb-8">
+          <div className="grid items-center  lg:grid-cols-3 p-4 md:p-8">
+            <div className="flex flex-col items-center sm:items-start md:block mb-8 lg:col-span-1">
               {/* Avatar */}
               <div className="p-2 bg-[#FFECCF] h-48 w-48 rounded-full overflow-hidden">
                 <img
@@ -194,29 +207,29 @@ const ProfilePage = (props: Props) => {
                 {/* {profile?.profile?.location} */}
               </div>
               <div className="md:text-lg text-gray-600">
-                {profile?.experience &&
-                  profile?.experience.length > 0 &&
-                  `${profile?.experience[0]?.position} , ${profile?.experience[0]?.companyName}`}
+                {profile?.profile?.title}
               </div>
-              {userId !== profile?.profile?.user && <div className="mt-8 flex gap-2">
-                <Button
-                  onClick={() => setMsgModal(true)}
-                  cls=" px-4 gap-4 bg-primary text-white   rounded-md  font-semibold gap"
-                >
-                  <CollaborateIcon />
-                  Collaborate
-                </Button>
-                {/* Todo : Add Endorse function here  */}
-                <Button
-                  onClick={() => setEndorseModal(true)}
-                  cls="btn__secondary-outline"
-                >
-                  {" "}
-                  <FaFire className="mr-1 text-base" /> Endorse
-                </Button>
-              </div>}
+              {userId !== profile?.profile?.user && (
+                <div className="mt-8 flex gap-2">
+                  <Button
+                    onClick={() => setMsgModal(true)}
+                    cls=" px-4 gap-4 bg-primary text-white   rounded-md  font-semibold gap"
+                  >
+                    <CollaborateIcon />
+                    Collaborate
+                  </Button>
+                  {/* Todo : Add Endorse function here  */}
+                  <Button
+                    onClick={() => setEndorseModal(true)}
+                    cls="btn__secondary-outline"
+                  >
+                    {" "}
+                    <FaFire className="mr-1 text-base" /> Endorse
+                  </Button>
+                </div>
+              )}
             </div>
-            <div className="">
+            <div className="lg:col-span-2">
               <h6 className="text-primary text-3xl">
                 About{" "}
                 <span className="font-extrabold">{profile?.profile?.name}</span>
@@ -225,24 +238,30 @@ const ProfilePage = (props: Props) => {
                 {profile?.profile?.bio}
               </p>
               <hr />
-              <h6 className="mt-8 mb-4 text-primary text-2xl block">
+              <h6 className="mt-8 mb-4 text-primary text-xl block">
                 {"I'm available for"}
               </h6>
               <div className=" flex flex-wrap gap-2">
                 {profile?.profile?.availableFor?.map((item, idx) => (
-                  <div className="tag__simple" key={idx}>
+                  <p
+                    key={idx}
+                    className={`text-sm text-primary ${generateRandomColor()} px-3 py-1.5 rounded-lg`}
+                  >
                     {item}
-                  </div>
+                  </p>
                 ))}
               </div>
-              <h6 className="mt-8 mb-4 text-primary text-2xl block">
+              <h6 className="mt-8 mb-4 text-primary text-xl block">
                 {"My Skills"}
               </h6>
               <div className=" flex flex-wrap gap-2">
                 {profile?.profile?.skills?.map((item, idx) => (
-                  <div className="tag__simple" key={idx}>
+                  <p
+                    key={idx}
+                    className={`text-sm text-primary ${generateRandomColor()} px-3 py-1.5 rounded-lg`}
+                  >
                     {item}
-                  </div>
+                  </p>
                 ))}
               </div>
             </div>
