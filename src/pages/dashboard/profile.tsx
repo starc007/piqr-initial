@@ -25,7 +25,9 @@ const EditProfile = () => {
   const [bioModal, setBioModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
+  const [title,setTitle] = useState<string>(user?.profile?.title ?? "")
   const [editName, setEditName] = useState<boolean>(false);
+  const [editTitle, setEditTitle] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [skillModal, setSkillModal] = useState<boolean>(false);
   const handleUpdateName = async () => {
@@ -34,6 +36,14 @@ const EditProfile = () => {
     setEditName(false);
     setSubmitting(false);
   };
+
+  const handleUpdateTitle = async () => {
+    setSubmitting(true);
+    await updateUserDetail({ title });
+    setEditTitle(false);
+    setSubmitting(false);
+  };
+  
 
   return (
     <PrivateRoute>
@@ -82,12 +92,36 @@ const EditProfile = () => {
                 <EditButton onClick={() => setEditName(true)} />
               )}
             </div>
-            <div className="md:text-lg mb-4 font-bold flex items-center gap-1 text-gray-400">
+            <div className="md:text-lg font-bold flex items-center gap-1 text-gray-400">
               @{user?.profile?.username}
+            </div>
+            <div className="md:text-lg mb-4 font-semibold flex items-center gap-1 text-gray-600">
+             {editTitle ? <input
+                  className="border-b-2 w-40"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                /> : user?.profile?.title ?? "Add Title" }
+                 {editTitle ? (
+                <div>
+                  <button
+                    onClick={handleUpdateTitle}
+                    className="text-green-500 hover:bg-green-100 duration-200 rounded-md p-1"
+                  >
+                    <BiCheck className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={() => setEditTitle(false)}
+                    className="text-red-500 hover:bg-red-100 duration-200 rounded-md p-1"
+                  >
+                    <BiX className="h-6 w-6" />
+                  </button>
+                </div>
+              ) : (
+                <EditButton onClick={() => setEditTitle(true)} />
+              )}
             </div>
             <Link href={"/"+user?.profile?.username} className="btn__secondary-outline ">
               View Profile 
-
             </Link>
           </div>
           <div className="flex-1">

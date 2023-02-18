@@ -1,14 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Button from "@components/UI/Button";
 import React, { FC, useState } from "react";
-import { FaTelegramPlane, FaFire, FaArrowRight } from "react-icons/fa";
-import { AiFillFire } from "react-icons/ai";
-import { useAuthStore } from "@store/index";
+import { FaFire, FaTelegramPlane} from "react-icons/fa";
 import { ProfileResponse } from "src/pages/explore";
 import Link from "next/link";
 import { EndorseModal } from "@components/Endorse/EndorseModal";
 import { SendMessageModal } from "@components/Inbox/SendMessageModal";
-import { HiArrowRight } from "react-icons/hi2";
 
 const generateRandomColor = () => {
   const colors = [
@@ -40,8 +37,8 @@ const ProfileCard = ({
 
   return (
     <>
-      <Link href={"/" + username}>
-        <div className="flex flex-col justify-between h-72 border rounded-md px-3 py-4 hover:-translate-y-1 hover:border-secondary transition duration-300 hover:shadow-lg">
+        <div className="flex flex-col  h-72 border rounded-md px-3 py-4 hover:-translate-y-1 hover:border-secondary transition duration-300 hover:shadow-lg">
+        {username}
           <img
             src={avatar}
             alt="profile"
@@ -65,7 +62,7 @@ const ProfileCard = ({
               ))}
             </div>
           </div>
-          <div className="flex flex-col mt-4">
+          {/* <div className="flex flex-col mt-4">
             <p className="text-xs text-primary font-semibold">Skills</p>
             <div className="flex flex-wrap gap-2 mt-1">
               {skills.map((item) => (
@@ -77,19 +74,18 @@ const ProfileCard = ({
                 </p>
               ))}
             </div>
-          </div>
-          <div className="flex justify-end">
-            {/* <Button onClick={()=>setMsgModal(true)} cls="flex items-center text-xs text-gray-600 px-3 py-2 rounded-md hover:bg-gray-100 hover:text-primary transition duration-300">
+          </div> */}
+          <div className="flex justify-between mt-auto">
+            <Button onClick={()=>setMsgModal(true)} cls="flex items-center text-xs text-gray-600 px-3 py-2 rounded-md hover:bg-gray-100 hover:text-primary transition duration-300">
           <FaTelegramPlane className="mr-1 text-base" />
           Message
-        </Button> */}
-            {/* <Button onClick={()=>setEndorseModal(true)} cls="text-primary text-xs px-3 py-2 bg-gray-100 rounded-md">
-          View Profile
-          <HiArrowRight className="ml-2 text-sm" />
-        </Button> */}
+        </Button>
+            <Button onClick={()=>setEndorseModal(true)} cls="text-primary text-xs px-3 py-2 bg-gray-100 rounded-md">
+          <FaFire className="mr-2 text-base" />
+          Endorse
+          </Button>
           </div>
         </div>
-      </Link>
       <EndorseModal
         open={endorseModal}
         closeModal={() => setEndorseModal(false)}

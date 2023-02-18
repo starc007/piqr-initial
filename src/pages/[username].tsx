@@ -17,7 +17,9 @@ import AcademicIcon from "@components/Icons/AcademicIcon";
 import CheckedListIcon from "@components/Icons/CheckedListIcon";
 import SuitcaseIcon from "@components/Icons/SuitcaseIcon";
 import StarIcon from "@components/Icons/StarIcon";
-import { render } from "@headlessui/react/dist/utils/render";
+import { TbBrandBehance, TbBrandDribbble, TbBrandFacebook, TbBrandInstagram, TbBrandLinkedin, TbBrandTwitter, TbBrandYoutube, TbNetwork } from "react-icons/tb";
+import Link from "next/link";
+
 type Props = {};
 
 const ProfilePage = (props: Props) => {
@@ -167,6 +169,49 @@ const ProfilePage = (props: Props) => {
         });
     }
   }, [username, isLoggedIn]);
+  const socials = profile?.socials
+  const links = [
+    {
+      title: "Twitter",
+      href: socials?.twitter,
+      icon: <TbBrandTwitter className="h-6 w-6" />,
+    },
+    {
+      title: "LinkedIn",
+      href: socials?.linkedin,
+      icon: <TbBrandLinkedin className="h-6 w-6" />,
+    },
+    {
+      title: "Facebook",
+      href: socials?.facebook,
+      icon: <TbBrandFacebook className="h-6 w-6" />,
+    },
+    {
+      title: "Instagram",
+      href: socials?.instagram,
+      icon: <TbBrandInstagram className="h-6 w-6" />,
+    },
+    {
+      title: "Behance",
+      href: socials?.behance,
+      icon: <TbBrandBehance className="h-6 w-6" />,
+    },
+    {
+      title: "Dribble",
+      href: socials?.dribble,
+      icon: <TbBrandDribbble className="h-6 w-6" />,
+    },
+    {
+      title: "Youtube",
+      href: socials?.youtube,
+      icon: <TbBrandYoutube className="h-6 w-6" />,
+    },
+    {
+      title: "Website",
+      href: socials?.website,
+      icon: <TbNetwork className="h-6 w-6" />,
+    },
+  ];
 
   if (loading) {
     return (
@@ -206,8 +251,18 @@ const ProfilePage = (props: Props) => {
                 @{username}
                 {/* {profile?.profile?.location} */}
               </div>
-              <div className="md:text-lg text-gray-600">
+              <div className="md:text-lg font-medium text-gray-600">
                 {profile?.profile?.title}
+              </div>
+              <div className="flex gap-2 mt-1 flex-wrap">
+                {links?.map((item)=>{
+                  if(!item.href) return <></>
+                  return <Link href={item.href} target="_blank" rel="noreferrer" key={item.title} className="text-gray-400 hover:text-secondary p-1 border rounded-md hover:shadow-xl duration-200 ease-out  hover:border-secondary">
+                    {item.icon}
+                  </Link>
+                  
+
+                })}
               </div>
               {userId !== profile?.profile?.user && (
                 <div className="mt-8 flex gap-2">

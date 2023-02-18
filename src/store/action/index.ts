@@ -62,7 +62,7 @@ export const loginWithEmail = async (
         Router.push("/login?sent=true");
       } else {
         getUserData(set).then(() => {
-          Router.push("/");
+          Router.push("/explore");
         });
       }
     }
@@ -86,7 +86,7 @@ export const loginWithGoogle = async (set: ZAuthSetFunction, code: string) => {
       localStorage.setItem("w3Token", response?.data?.accessToken);
       toast.success("Login Successfull");
       getUserData(set).then(() => {
-        Router.push("/");
+        Router.push("/explore");
       });
     }
   } catch (err: any) {

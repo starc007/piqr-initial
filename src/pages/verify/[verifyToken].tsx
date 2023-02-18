@@ -11,6 +11,7 @@ const VerifyToken = (props: Props) => {
   const router = useRouter();
   const token = router.query.verifyToken as string;
   const getUserData = useAuthStore(state=>state.getUserData)
+  
   const verifyEmailLogin = async () => {
     try {
       const res = await API.post("/auth/verify", { token });
