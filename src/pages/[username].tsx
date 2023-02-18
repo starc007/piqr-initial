@@ -257,7 +257,7 @@ const ProfilePage = (props: Props) => {
               <div className="flex gap-2 mt-1 flex-wrap">
                 {links?.map((item)=>{
                   if(!item.href) return <></>
-                  return <Link href={item.href} target="_blank" rel="noreferrer" key={item.title} className="text-gray-400 hover:text-secondary p-1 border rounded-md hover:shadow-xl duration-200 ease-out  hover:border-secondary">
+                  return <Link href={item.href} target="_blank" rel="noreferrer" key={item.title} className="text-gray-400 hover:text-secondary p-1  rounded-md hover:shadow-xl duration-200 ease-out">
                     {item.icon}
                   </Link>
                   
