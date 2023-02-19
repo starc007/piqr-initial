@@ -28,9 +28,6 @@ const ProfileCard = ({
   avatar,
   bio,
   name,
-  skills,
-  user,
-  username,
 }: ProfileResponse) => {
   const [endorseModal, setEndorseModal] = useState<boolean>(false);
   const [msgModal, setMsgModal] = useState<boolean>(false);
@@ -38,7 +35,6 @@ const ProfileCard = ({
   return (
     <>
         <div className="flex flex-col  h-72 border rounded-md px-3 py-4 hover:-translate-y-1 hover:border-secondary transition duration-300 hover:shadow-lg">
-        {username}
           <img
             src={avatar}
             alt="profile"

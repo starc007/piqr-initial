@@ -3,7 +3,6 @@ import { useAuthStore } from "@store/index";
 import { useRouter } from "next/router";
 import { BiCheck, BiX } from "react-icons/bi";
 import { HiOutlinePlus } from "react-icons/hi2";
-import PrivateRoute from "@routes/PrivateRoute";
 import { useState } from "react";
 import { AddBioModal } from "@components/EditProfile/AddBioModal";
 import { AddAvailableForModal } from "@components/EditProfile/AddAvailableForModal";
@@ -14,7 +13,6 @@ import LinksSection from "@components/EditProfile/LinksSection";
 import { ActivitySection } from "@components/EditProfile/ActivitySection";
 import { AddSkillsModal } from "@components/EditProfile/AddSkillsModal";
 import Link from "next/link";
-import Button from "@components/UI/Button";
 
 const EditProfile = () => {
   const router = useRouter();
@@ -22,6 +20,7 @@ const EditProfile = () => {
     user: state.user,
     updateUserDetail: state.updateUserDetail,
   }));
+
   const [bioModal, setBioModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
@@ -46,7 +45,7 @@ const EditProfile = () => {
   
 
   return (
-    <PrivateRoute>
+    <>
       <img
         src="/mesh.jpeg"
         className="fixed top-[4rem] left-0 z-[-1] w-screen"
@@ -213,7 +212,7 @@ const EditProfile = () => {
         closeModal={() => setSkillModal(false)}
         initialValue={user?.profile?.skills ?? []}
       />
-    </PrivateRoute>
+    </>
   );
 };
 

@@ -27,7 +27,6 @@ const ProfilePage = (props: Props) => {
   const username = router.query.username as string;
 
   const [loading, setLoading] = useState<boolean>(true);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const userId = useAuthStore((state) => state.userId);
   const [profile, setProfile] = useState<UserResponse | undefined>(undefined);
   const [error, setError] = useState<string>("");
@@ -153,7 +152,7 @@ const ProfilePage = (props: Props) => {
   };
 
   useEffect(() => {
-    if (username && isLoggedIn) {
+    if (username) {
       setLoading(true);
       API.get("/user/" + username)
         .then((response) => {
@@ -168,7 +167,7 @@ const ProfilePage = (props: Props) => {
           setLoading(false);
         });
     }
-  }, [username, isLoggedIn]);
+  }, [username]);
   const socials = profile?.socials
   const links = [
     {

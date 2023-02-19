@@ -3,6 +3,7 @@ import { TextArea } from "@components/UI/Input";
 import Modal from "@components/UI/Modal";
 import { useAuthStore } from "@store/index";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 interface Props {
   open: boolean;
@@ -15,7 +16,12 @@ export const EndorseModal = ({ open, closeModal,userId,name }: Props) => {
   const [msg, setMsg] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
   const endorseUser = useAuthStore((state) => state.endorseUser);
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
+  if(open && !isLoggedIn){
+    toast("You need to be logged in to do that !")
+    closeModal()
+  }
   const handleUpdateBio = async () => {
     setSubmitting(true);
     await endorseUser({endorseTo:userId,message:msg});

@@ -10,7 +10,7 @@ type Props = {
 const SendMessage = ({ receiverId }: Props) => {
   const [message, setMessage] = useState<string>("");
   const sendMessage = useAuthStore((state) => state.sendMessage);
-
+  
   const handleSendMessage = async () => {
     await sendMessage({ uid: receiverId, message });
     setMessage("");
