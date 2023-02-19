@@ -27,6 +27,7 @@ export interface UpdateUserProps {
   title: string;
   skills: string[];
   availableFor: string[];
+  category: string[];
 }
 
 export interface Socials {

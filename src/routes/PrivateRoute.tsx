@@ -13,30 +13,34 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const router = useRouter();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user = useAuthStore((state) => state.user);
-  const isLoading = useAuthStore(state=>state.loading)
+  const isLoading = useAuthStore((state) => state.loading);
 
   useEffect(() => {
-    if(!isLoading && isLoggedIn && !user?.profile.username){
+    if (!isLoading && isLoggedIn && !user?.profile.username) {
       // if the user has no username send them to onboard page
-      router.push("/onboard")
+      router.push("/onboard");
     }
     if (!isLoading && !isLoggedIn) {
       router.push("/login");
     }
-  }, [isLoggedIn, user,isLoading]);
+  }, [isLoggedIn, user, isLoading]);
 
-  if(isLoading){
-    return <div className="section__height grid place-items-center">
-      <Loader col="text-black"/>
-    </div>
+  if (isLoading && isLoggedIn) {
+    return (
+      <div className="section__height grid place-items-center">
+        <Loader col="text-black" />
+      </div>
+    );
   }
 
-  if(!isLoading && !isLoggedIn){
-    return <div className="section__height grid place-items-center">
-        Unauthenticated
-    </div>
-  }
-  
+  // if (!isLoading && !isLoggedIn) {
+  //   return (
+  //     <div className="section__height grid place-items-center">
+  //       Unauthenticated
+  //     </div>
+  //   );
+  // }
+
   return <>{children}</>;
 };
 

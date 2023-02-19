@@ -4,6 +4,7 @@ import Category from "@components/Category";
 import { API } from "@api/index";
 import { SKILL_CATEGORIES } from "src/constants";
 import Loader from "@components/Loader";
+import { useAuthStore } from "@store/index";
 
 export type ProfileResponse = {
   _id: string;
@@ -22,16 +23,17 @@ const Explore = () => {
   const [users, setUsers] = useState<ProfileResponse[]>([]);
   const [category, setCategory] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
-    if (users?.length === 0) {
+    if (users?.length === 0 && isLoggedIn) {
       setLoading(true);
       API.get("/user/all").then((res) => {
         setUsers(res?.data?.users);
         setLoading(false);
       });
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <PrivateRoute>
@@ -47,10 +49,11 @@ const Explore = () => {
             </p>
           </div>
           <div className="flex flex-col space-y-4 mt-6">
-
-            {loading ? <Loader col="text-black"/> : (
+            {loading ? (
+              <Loader col="text-black" />
+            ) : (
               <>
-                <div className="flex items-center gap-4 flex-wrap">
+                {/* <div className="flex items-center gap-4 flex-wrap">
                   <button
                     onClick={() => setCategory("")}
                     className={`tag__simple ${
@@ -70,7 +73,7 @@ const Explore = () => {
                       {item}
                     </button>
                   ))}
-                </div>
+                </div> */}
                 <Category
                   users={
                     category

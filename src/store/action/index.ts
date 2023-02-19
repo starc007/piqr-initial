@@ -106,7 +106,7 @@ export const logout = async (set: ZAuthSetFunction) => {
     const response = await API.post("/auth/logout");
     set({ isLoggedIn: false, userId: "" });
     localStorage.removeItem("w3Token");
-    Router.push("/");
+    Router.push("/login");
   } catch (err) {
     console.log("logout", err);
   }
@@ -234,7 +234,7 @@ export const getAllMessages = async () => {
     }
   } catch (err) {
     console.log(err);
-    toast.error("Failed to load messages !")
+    toast.error("Failed to load messages !");
   }
 };
 

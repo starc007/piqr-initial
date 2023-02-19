@@ -1,10 +1,10 @@
-import * as React from "react"
-import { SVGProps, memo } from "react"
+import * as React from "react";
+import { SVGProps, memo } from "react";
 
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width="31"
-    height="32"
+    className="sm:w-6 sm:h-6 w-5 h-5"
+    viewBox="0 0 32 32"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
@@ -22,7 +22,6 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
       </clipPath>
     </defs>
   </svg>
-)
+);
 
-
-export default React.memo(SvgComponent)
+export default React.memo(SvgComponent);

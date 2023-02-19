@@ -4,8 +4,7 @@ function Icon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="34"
-      height="34"
+      className="sm:w-6 sm:h-6 w-5 h-5"
       fill="none"
       viewBox="0 0 35 35"
       {...props}

@@ -3,9 +3,7 @@ import Modal from "@components/UI/Modal";
 import { TagsInput } from "@components/UI/TagsInput";
 import { useAuthStore } from "@store/index";
 import { useState } from "react";
-import { SKILL_CATEGORIES } from "src/constants";
-
-
+import { SKILLS } from "src/constants";
 
 interface Props {
   open: boolean;
@@ -13,11 +11,8 @@ interface Props {
   initialValue: string[];
 }
 
-
-
-
 export const AddSkillsModal = ({ open, closeModal, initialValue }: Props) => {
-  const [skills,setSkills] = useState<string[]>(initialValue ?? [])
+  const [skills, setSkills] = useState<string[]>(initialValue ?? []);
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const updateUserDetail = useAuthStore((state) => state.updateUserDetail);
@@ -29,7 +24,6 @@ export const AddSkillsModal = ({ open, closeModal, initialValue }: Props) => {
     closeModal();
   };
 
-  
   return (
     <Modal
       title="Add skills"
@@ -42,7 +36,13 @@ export const AddSkillsModal = ({ open, closeModal, initialValue }: Props) => {
           What are you skilled at
         </label>
         <div>
-        <TagsInput placeholder="Type something.." tags={skills} setTags={setSkills} suggestions={SKILL_CATEGORIES} autocomplete/>
+          <TagsInput
+            placeholder="Type something.."
+            tags={skills}
+            setTags={setSkills}
+            suggestions={SKILLS}
+            autocomplete={false}
+          />
         </div>
         <div className="flex items-center justify-center mt-4 gap-4">
           <Button

@@ -17,7 +17,16 @@ import AcademicIcon from "@components/Icons/AcademicIcon";
 import CheckedListIcon from "@components/Icons/CheckedListIcon";
 import SuitcaseIcon from "@components/Icons/SuitcaseIcon";
 import StarIcon from "@components/Icons/StarIcon";
-import { TbBrandBehance, TbBrandDribbble, TbBrandFacebook, TbBrandInstagram, TbBrandLinkedin, TbBrandTwitter, TbBrandYoutube, TbNetwork } from "react-icons/tb";
+import {
+  TbBrandBehance,
+  TbBrandDribbble,
+  TbBrandFacebook,
+  TbBrandInstagram,
+  TbBrandLinkedin,
+  TbBrandTwitter,
+  TbBrandYoutube,
+  TbNetwork,
+} from "react-icons/tb";
 import Link from "next/link";
 
 type Props = {};
@@ -44,6 +53,8 @@ const ProfilePage = (props: Props) => {
       "bg-green-50",
       "bg-yellow-50",
       "bg-red-50",
+      "bg-orange-50",
+      "bg-teal-50",
     ];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     return randomColor;
@@ -168,7 +179,7 @@ const ProfilePage = (props: Props) => {
         });
     }
   }, [username]);
-  const socials = profile?.socials
+  const socials = profile?.socials;
   const links = [
     {
       title: "Twitter",
@@ -231,11 +242,11 @@ const ProfilePage = (props: Props) => {
   return (
     <>
       <section className="section__height lg:px-16 pt-4 md:pt-0 ">
-        <div className="bg-white  p-8  border-x ">
+        <div className="bg-white  sm:p-8 p-0  sm:border-x ">
           <div className="grid items-center  lg:grid-cols-3 p-4 md:p-8">
             <div className="flex flex-col items-center sm:items-start md:block mb-8 lg:col-span-1">
               {/* Avatar */}
-              <div className="p-2 bg-[#FFECCF] h-48 w-48 rounded-full overflow-hidden">
+              <div className="p-2 bg-[#FFECCF] sm:h-48 sm:w-48 w-32 h-32 rounded-full overflow-hidden">
                 <img
                   loading="lazy"
                   src={profile?.profile?.avatar}
@@ -254,13 +265,19 @@ const ProfilePage = (props: Props) => {
                 {profile?.profile?.title}
               </div>
               <div className="flex gap-2 mt-1 flex-wrap">
-                {links?.map((item)=>{
-                  if(!item.href) return <></>
-                  return <Link href={item.href} target="_blank" rel="noreferrer" key={item.title} className="text-gray-400 hover:text-secondary p-1  rounded-md hover:shadow-xl duration-200 ease-out">
-                    {item.icon}
-                  </Link>
-                  
-
+                {links?.map((item) => {
+                  if (!item.href) return <></>;
+                  return (
+                    <Link
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      key={item.title}
+                      className="text-gray-400 hover:text-secondary p-1  rounded-md hover:shadow-xl duration-200 ease-out"
+                    >
+                      {item.icon}
+                    </Link>
+                  );
                 })}
               </div>
               {userId !== profile?.profile?.user && (
@@ -284,7 +301,7 @@ const ProfilePage = (props: Props) => {
               )}
             </div>
             <div className="lg:col-span-2">
-              <h6 className="text-primary text-3xl">
+              <h6 className="text-primary sm:text-3xl text-xl">
                 About{" "}
                 <span className="font-extrabold">{profile?.profile?.name}</span>
               </h6>
@@ -321,25 +338,27 @@ const ProfilePage = (props: Props) => {
             </div>
           </div>
           <hr />
-          <div className="p-8">
+          <div className="sm:p-8 p-0">
             <div className="flex  items-center justify-around mt-8 mb-16 ">
               <div className="flex flex-col items-center">
                 <button
                   onClick={() => setCategory("all")}
-                  className={`h-16 w-16 ${
+                  className={`sm:h-16 sm:w-16 h-12 w-12 ${
                     category === "all"
                       ? "bg-[#FFB039] text-white"
                       : "bg-[#FFB039]/20 hover:bg-[#FFB039]/25 hover:border border-[#FFB039] text-[#FFB039]"
-                  } rounded-full flex items-center justify-center p-3`}
+                  } rounded-full flex items-center justify-center sm:p-3 p-2`}
                 >
                   <CheckedListIcon />
                 </button>
-                <div className="font-semibold text-center">All</div>
+                <div className="font-semibold text-center sm:text-base text-sm">
+                  All
+                </div>
               </div>
               <div className="flex flex-col items-center">
                 <button
                   onClick={() => setCategory("education")}
-                  className={`h-16 w-16 ${
+                  className={`sm:h-16 sm:w-16 h-12 w-12 ${
                     category === "education"
                       ? "bg-[#544F87] text-white"
                       : "bg-[#EBE9FB]/20 hover:bg-violet-800/20 hover:border border-[#544F87] text-[#544F87]"
@@ -347,18 +366,14 @@ const ProfilePage = (props: Props) => {
                 >
                   <AcademicIcon />
                 </button>
-                <div className="font-semibold text-center">Education</div>
+                <div className="font-semibold text-center sm:text-base text-sm">
+                  Education
+                </div>
               </div>
-              {/* <div className="flex flex-col items-center">
-              <button onClick={()=>setCategory("goals")} className=" rounded-full p-3 bg-[#F3FFF7]">
-                <TargetIcon className="text-[#4FC971]" />
-              </button >
-              <div className="font-semibold text-center">Goal</div>
-            </div> */}
               <div className="flex flex-col items-center ">
                 <button
                   onClick={() => setCategory("position")}
-                  className={`h-16 w-16 ${
+                  className={`sm:h-16 sm:w-16 h-12 w-12 ${
                     category === "position"
                       ? "bg-[#46C1F6] text-white"
                       : "bg-[#46C1F6]/10 hover:bg-[#46C1F6]/25 hover:border border-[#46C1F6] text-[#46C1F6]"
@@ -366,12 +381,14 @@ const ProfilePage = (props: Props) => {
                 >
                   <SuitcaseIcon />
                 </button>
-                <div className="font-semibold text-center">Position</div>
+                <div className="font-semibold text-center sm:text-base text-sm">
+                  Position
+                </div>
               </div>
               <div className="flex flex-col items-center ">
                 <button
                   onClick={() => setCategory("others")}
-                  className={`h-16 w-16 ${
+                  className={`sm:h-16 sm:w-16 h-12 w-12 ${
                     category === "others"
                       ? "bg-[#FFB74A] text-white"
                       : "bg-[#FFB74A]/10 hover:bg-[#FFB74A]/25 hover:border border-[#FFB74A] text-[#FFB74A]"
@@ -379,7 +396,9 @@ const ProfilePage = (props: Props) => {
                 >
                   <StarIcon />
                 </button>
-                <div className="font-semibold text-center">Others</div>
+                <div className="font-semibold text-center sm:text-base text-sm">
+                  Others
+                </div>
               </div>
             </div>
             {showAll()}

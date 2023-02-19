@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import ProfileIcon from "@components/Icons/ProfileIcon";
 import { useAuthStore } from "@store/index";
-import { useRouter } from "next/router";
 import { BiCheck, BiX } from "react-icons/bi";
 import { HiOutlinePlus } from "react-icons/hi2";
 import { useState } from "react";
@@ -13,9 +14,9 @@ import LinksSection from "@components/EditProfile/LinksSection";
 import { ActivitySection } from "@components/EditProfile/ActivitySection";
 import { AddSkillsModal } from "@components/EditProfile/AddSkillsModal";
 import Link from "next/link";
+import PrivateRoute from "@routes/PrivateRoute";
 
 const EditProfile = () => {
-  const router = useRouter();
   const { user, updateUserDetail } = useAuthStore((state) => ({
     user: state.user,
     updateUserDetail: state.updateUserDetail,
@@ -24,7 +25,7 @@ const EditProfile = () => {
   const [bioModal, setBioModal] = useState<boolean>(false);
   const [availForModal, setAvailForModal] = useState<boolean>(false);
   const [name, setName] = useState<string>(user?.profile?.name ?? "");
-  const [title,setTitle] = useState<string>(user?.profile?.title ?? "")
+  const [title, setTitle] = useState<string>(user?.profile?.title ?? "");
   const [editName, setEditName] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -42,10 +43,9 @@ const EditProfile = () => {
     setEditTitle(false);
     setSubmitting(false);
   };
-  
 
   return (
-    <>
+    <PrivateRoute>
       <img
         src="/mesh.jpeg"
         className="fixed top-[4rem] left-0 z-[-1] w-screen"
@@ -95,12 +95,16 @@ const EditProfile = () => {
               @{user?.profile?.username}
             </div>
             <div className="md:text-lg mb-4 font-semibold flex items-center gap-1 text-gray-600">
-             {editTitle ? <input
+              {editTitle ? (
+                <input
                   className="border-b-2 w-40"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                /> : user?.profile?.title ?? "Add Title" }
-                 {editTitle ? (
+                />
+              ) : (
+                user?.profile?.title ?? "Add Title"
+              )}
+              {editTitle ? (
                 <div>
                   <button
                     onClick={handleUpdateTitle}
@@ -119,8 +123,11 @@ const EditProfile = () => {
                 <EditButton onClick={() => setEditTitle(true)} />
               )}
             </div>
-            <Link href={"/"+user?.profile?.username} className="btn__secondary-outline ">
-              View Profile 
+            <Link
+              href={"/" + user?.profile?.username}
+              className="btn__secondary-outline "
+            >
+              View Profile
             </Link>
           </div>
           <div className="flex-1">
@@ -212,7 +219,7 @@ const EditProfile = () => {
         closeModal={() => setSkillModal(false)}
         initialValue={user?.profile?.skills ?? []}
       />
-    </>
+    </PrivateRoute>
   );
 };
 

@@ -4,10 +4,9 @@ function Icon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="32"
+      className="sm:w-6 sm:h-6 w-5 h-5"
+      viewBox="0 0 32 32"
       fill="none"
-      viewBox="0 0 34 32"
       {...props}
     >
       <path
